@@ -1,16 +1,20 @@
 import "package:flutter/material.dart";
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
+import 'package:teater_jkt/controller/contact_controller.dart';
+import 'package:teater_jkt/controller/user_controlller.dart';
 import 'package:teater_jkt/screens/home/ShowDescription.dart';
 import '../../widget/TPprimaryHeader.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final UserController userController = UserController();
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        
         child: Column(
           children: [
             TPrimaryHeaderContainer(
@@ -18,28 +22,10 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 50),
-                  const Padding(
+                   Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Welcome",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          "Adit",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+                    child: WelcomeSection()
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -112,49 +98,55 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategorySection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Show Favorite',
-          style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: 50,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              _buildCategoryItem('Category 1'),
-              _buildCategoryItem('Category 2'),
-              _buildCategoryItem('Category 3'),
-              _buildCategoryItem('Category 4'),
-              _buildCategoryItem('Category 5'),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+  
 
-  Widget _buildCategoryItem(String title) {
-    return Container(
-      width: 100,
+ Widget _buildCategorySection() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const Text(
+        'Show Favorite',
+        style: TextStyle(
+            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+      ),
+      const SizedBox(height: 10),
+      SizedBox(
+        height: 50,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            _buildCategoryItem('#CaraMeminumRamune'),
+            _buildCategoryItem('#AturanAntiCinta'),
+            _buildCategoryItem('#PajamaDrive'),
+            _buildCategoryItem('#Aitakatta'),
+            _buildCategoryItem('#TunasDibalikSeragam'),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _buildCategoryItem(String title) {
+  return IntrinsicWidth(
+    child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 5.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       decoration: BoxDecoration(
-        color: Colors.blue,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Center(
         child: Text(
           title,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.orange),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
+
 
   Widget _buildCarouselItem(
       BuildContext context, String imageUrl, String title, String description) {
@@ -280,5 +272,37 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+class WelcomeSection extends StatelessWidget {
+  final ContactController contactController = Get.put(ContactController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      var user = contactController.contact.value;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Welcome",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          ),
+          Text(
+            user.firstName ?? 'No Name',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      );
+    });
   }
 }

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:teater_jkt/model/contact_model.dart';
 import 'package:teater_jkt/repository/user_repo.dart';
+import 'package:teater_jkt/screens/Login.dart';
 import 'package:teater_jkt/services/token_service.dart';
 import '../model/user_model.dart';
-import '../services/api_services.dart';
+import '../services/user_service.dart';
 
-class LoginController extends GetxController {
+class UserController extends GetxController {
   final UserRepo userRepo = UserRepo();
-  final ApiService apiService = Get.put(ApiService());
+  final UserService userService = Get.put(UserService());
   final tokenService = TokenService();
 
   var isLoading = false.obs;
@@ -56,7 +57,7 @@ class LoginController extends GetxController {
     try {
       var token = await tokenService.getToken();
       print('bisa cuy $token');
-      final result = await apiService.getCurrentUser();
+      final result = await userService.getCurrentUser();
       
       print("Current user: $result");
       if (result != null) {
@@ -75,7 +76,7 @@ class LoginController extends GetxController {
   Future<void> getUserById(int id) async {
     isLoading(true);
     try {
-      final result = await apiService.getUserById(id);
+      final result = await userService.getUserById(id);
       if (result != null) {
         userModel(result);
       } else {
@@ -109,7 +110,7 @@ class LoginController extends GetxController {
   Future<void> updateUser(int id, UserModel user) async {
     isLoading(true);
     try {
-      final success = await apiService.updateUser(id, user);
+      final success = await userService.updateUser(id, user);
       if (success) {
         Get.snackbar('Success', 'User Updated Successfully');
       } else {
@@ -123,12 +124,30 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<void> deleteUser(int id) async {
+  // Future<void> deleteUser(int id) async {
+  //   isLoading(true);
+  //   try {
+  //     final success = await userService.deleteUser(id);
+  //     if (success) {
+  //       Get.snackbar('Success', 'User Deleted Successfully');
+  //     } else {
+  //       Get.snackbar('Error', 'Failed to delete user');
+  //     }
+  //   } catch (e) {
+  //     print("Error: $e");
+  //     Get.snackbar('Error', 'Failed to delete user');
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
+
+  Future<void> logout() async {
     isLoading(true);
     try {
-      final success = await apiService.deleteUser(id);
+      final success = await userService.logout();
       if (success) {
-        Get.snackbar('Success', 'User Deleted Successfully');
+        Get.offAll(() => Login());
+        Get.snackbar('Success', 'User Logout Successfully');
       } else {
         Get.snackbar('Error', 'Failed to delete user');
       }

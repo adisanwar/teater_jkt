@@ -94,7 +94,7 @@ class Register extends StatelessWidget {
                                   final result =
                                       await registerController.register();
                                   if (result) {
-                                    Get.to(() => Login(),
+                                    Get.offAll(() => Login(),
                                         transition: Transition.rightToLeft);
                                   } else {
                                     print(result);

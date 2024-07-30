@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teater_jkt/controller/LoginController.dart';
+import 'package:teater_jkt/controller/user_controlller.dart';
 import 'package:teater_jkt/screens/Navigation_Menu.dart';
 import 'package:teater_jkt/screens/Register.dart';
 import 'package:teater_jkt/screens/remeberme_checkbox.dart';
@@ -9,7 +9,7 @@ import 'package:teater_jkt/widget/form/PrimaryButton.dart';
 import 'package:teater_jkt/widget/form/ScondaryButton.dart';
 
 class Login extends StatelessWidget {
-  final LoginController loginController = Get.put(LoginController());
+  final UserController userController = Get.put(UserController());
 
   Login({super.key});
 
@@ -21,7 +21,7 @@ class Login extends StatelessWidget {
           margin: const EdgeInsets.all(20),
           child: SingleChildScrollView(
             child: Form(
-              key: loginController.formKey,
+              key: userController.formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -35,7 +35,7 @@ class Login extends StatelessWidget {
                   const SizedBox(height: 20),
                   FormTextField(
                     label: 'Username',
-                    controller: loginController.usernameController,
+                    controller: userController.usernameController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your username';
@@ -46,7 +46,7 @@ class Login extends StatelessWidget {
                   const SizedBox(height: 20,),
                   FormTextField(
                     label: 'Password',
-                    controller: loginController.passwordController,
+                    controller: userController.passwordController,
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -57,7 +57,7 @@ class Login extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   RememberMeCheckbox(
-                    rememberMe: loginController.rememberMe,
+                    rememberMe: userController.rememberMe,
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
@@ -71,7 +71,7 @@ class Login extends StatelessWidget {
                     //           transition: Transition.rightToLeft);
                     //     }),
                     Obx(() {
-                      if (loginController.isLoading.value) {
+                      if (userController.isLoading.value) {
                         return const CircularProgressIndicator();
                       } else {
                         return Column(
@@ -82,7 +82,7 @@ class Login extends StatelessWidget {
                                   labelbtn: "Login",
                                   onPressed: ()
                                   async {
-                                    final result = await loginController.login();
+                                    final result = await userController.login();
                                     if (result) {
                                       Get.off(() => const NavigationMenu(), transition: Transition.rightToLeft);
                                     } else {
@@ -103,7 +103,7 @@ class Login extends StatelessWidget {
                     child: SecondaryButton(
                       label: "Create Account",
                       onPressed: () {
-                        Get.to(() => Register(),
+                        Get.offAll(() => Register(),
                             transition: Transition.rightToLeft);
                       },
                     ),

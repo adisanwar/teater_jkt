@@ -4,39 +4,22 @@ import 'package:teater_jkt/services/contact_service.dart';
 
 class ContactController extends GetxController {
   final ContactService contactService = Get.put(ContactService());
-  
+
   var isLoading = false.obs;
-  var contacts = <ContactModel>[].obs;
+  var contact = ContactModel().obs;
 
   @override
   void onInit() {
-    fetchContacts();
+    getContact();
     super.onInit();
   }
 
-  Future<void> fetchContacts() async {
+  Future<void> getContact() async {
     isLoading(true);
     try {
-      final result = await contactService.getContacts();
+      final result = await contactService.getContact();
       if (result != null) {
-        contacts(result);
-      } else {
-        Get.snackbar('Error', 'Failed to fetch contacts');
-      }
-    } catch (e) {
-      print("Error fetching contacts: $e");
-      Get.snackbar('Error', 'Failed to fetch contacts');
-    } finally {
-      isLoading(false);
-    }
-  }
-
-  Future<void> getContactById(int id) async {
-    isLoading(true);
-    try {
-      final result = await contactService.getContactById(id);
-      if (result != null) {
-        contacts.add(result);
+        contact(result);
       } else {
         Get.snackbar('Error', 'Failed to fetch contact');
       }
@@ -53,7 +36,7 @@ class ContactController extends GetxController {
     try {
       final success = await contactService.createContact(contact);
       if (success) {
-        fetchContacts();
+        getContact();
         Get.snackbar('Success', 'Contact Created Successfully');
       } else {
         Get.snackbar('Error', 'Failed to create contact');
@@ -71,7 +54,7 @@ class ContactController extends GetxController {
     try {
       final success = await contactService.updateContact(id, contact);
       if (success) {
-        fetchContacts();
+        getContact();
         Get.snackbar('Success', 'Contact Updated Successfully');
       } else {
         Get.snackbar('Error', 'Failed to update contact');
@@ -89,7 +72,7 @@ class ContactController extends GetxController {
     try {
       final success = await contactService.deleteContact(id);
       if (success) {
-        fetchContacts();
+        getContact();
         Get.snackbar('Success', 'Contact Deleted Successfully');
       } else {
         Get.snackbar('Error', 'Failed to delete contact');

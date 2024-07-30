@@ -8,7 +8,6 @@ class ContactService extends GetConnect {
 
   @override
   void onInit() {
-    // httpClient.baseUrl = Url.baseUrl;
     httpClient.addRequestModifier<void>((request) {
       final token = tokenService.getToken();
       if (token != null) {
@@ -19,28 +18,13 @@ class ContactService extends GetConnect {
     super.onInit();
   }
 
-  Future<List<ContactModel>?> getContacts() async {
+  Future<ContactModel?> getContact() async {
     try {
-      final response = await get(Url.getContacts);
+      final response = await get(Url.getContact);
+      print('Response body: ${response.body}');
       if (response.statusCode == 200) {
-        return (response.body['data'] as List)
-            .map((data) => ContactModel.fromJson(data))
-            .toList();
-      } else {
-        print('Failed to fetch contacts: ${response.statusCode} - ${response.statusText}');
-        return null;
-      }
-    } catch (e) {
-      print("Error fetching contacts: $e");
-      return null;
-    }
-  }
-
-  Future<ContactModel?> getContactById(int id) async {
-    try {
-      final response = await get('${Url.baseUrl}/contacts/$id');
-      if (response.statusCode == 200) {
-        return ContactModel.fromJson(response.body['data']);
+        // Mendapatkan kontak pertama dari daftar kontak
+        return ContactModel.fromJson(response.body['data'][0]);
       } else {
         print('Failed to fetch contact: ${response.statusCode} - ${response.statusText}');
         return null;
@@ -53,7 +37,7 @@ class ContactService extends GetConnect {
 
   Future<bool> createContact(ContactModel contact) async {
     try {
-      final response = await post('${Url.baseUrl}/contacts', contact.toJson());
+      final response = await post(Url.createContact, contact.toJson());
       return response.statusCode == 201;
     } catch (e) {
       print("Error creating contact: $e");
@@ -63,7 +47,7 @@ class ContactService extends GetConnect {
 
   Future<bool> updateContact(int id, ContactModel contact) async {
     try {
-      final response = await put('${Url.baseUrl}/contacts/$id', contact.toJson());
+      final response = await put('${Url.updateContact}/$id', contact.toJson());
       return response.statusCode == 200;
     } catch (e) {
       print("Error updating contact: $e");
@@ -73,7 +57,7 @@ class ContactService extends GetConnect {
 
   Future<bool> deleteContact(int id) async {
     try {
-      final response = await delete('${Url.baseUrl}/contacts/$id');
+      final response = await delete('${Url.deleteContact}/$id');
       return response.statusCode == 200;
     } catch (e) {
       print("Error deleting contact: $e");

@@ -3,7 +3,7 @@ import 'package:teater_jkt/api/urls.dart';
 import '../model/user_model.dart';
 import 'token_service.dart';
 
-class ApiService extends GetConnect {
+class UserService extends GetConnect {
   final TokenService tokenService = TokenService();
 
   @override
@@ -62,7 +62,7 @@ class ApiService extends GetConnect {
 
   Future<bool> updateUser(int id, UserModel user) async {
     try {
-      final response = await put('${Url.baseUrl}/users/$id', user.toJson());
+      final response = await patch('${Url.baseUrl}/users/$id', user.toJson());
 
       return response.statusCode == 200;
     } catch (e) {
@@ -71,9 +71,20 @@ class ApiService extends GetConnect {
     }
   }
 
-  Future<bool> deleteUser(int id) async {
+  // Future<bool> deleteUser(int id) async {
+  //   try {
+  //     final response = await delete('${Url.baseUrl}/users/$id');
+
+  //     return response.statusCode == 200;
+  //   } catch (e) {
+  //     print(e);
+  //     return false;
+  //   }
+  // }
+
+  Future<bool> logout() async {
     try {
-      final response = await delete('${Url.baseUrl}/users/$id');
+      final response = await delete(Url.logout);
 
       return response.statusCode == 200;
     } catch (e) {

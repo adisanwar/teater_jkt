@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:teater_jkt/controller/contact_controller.dart';
 import 'package:teater_jkt/model/contact_model.dart';
 import 'package:teater_jkt/model/user_model.dart';
-import '../../controller/LoginController.dart';
+import '../../controller/user_controlller.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,7 +13,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final LoginController userController = Get.put(LoginController());
+  final UserController userController = Get.put(UserController());
   final ContactController contactController = Get.put(ContactController());
   bool isEditing = false;
 
@@ -35,9 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
         }
 
         var user = userController.userModel.value;
-        var contact = contactController.contacts.isNotEmpty 
-            ? contactController.contacts.first 
-            : ContactModel();
+        var contact = userController.contactModel.value;
 
             // print(contact.phone);
 
@@ -65,6 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
+                        userController.logout();
                         // Handle logout
                       },
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
@@ -79,6 +78,8 @@ class _ProfilePageState extends State<ProfilePage> {
       }),
     );
   }
+
+  
 
   Widget _buildTopSection(UserModel user) {
     return Column(

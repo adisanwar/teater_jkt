@@ -3,12 +3,15 @@ class Url {
   static const baseUrl = 'http://10.107.253.100:3000/api';
   static const login = '$baseUrl/users/login';
   static const register = '$baseUrl/users';
+  static const logout = '$baseUrl/users/current';
+
   static const getCurrentUsers = '$baseUrl/users/current';
   static const getUsers = '$baseUrl/users/current';
   static const updateUsers = '$baseUrl/users/current';
   static const deleteUsers = '$baseUrl/users/current';
+  
 
-  static const getContacts = '$baseUrl/contacts';
+  static const getContact = '$baseUrl/contacts';
   static const createContact = '$baseUrl/contacts';
   static const updateContact = '$baseUrl/contacts';
   static const deleteContact = '$baseUrl/contacts';
