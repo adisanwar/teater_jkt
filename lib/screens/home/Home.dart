@@ -1,20 +1,20 @@
-import "package:flutter/material.dart";
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:teater_jkt/controller/contact_controller.dart';
-import 'package:teater_jkt/controller/user_controlller.dart';
+import 'package:teater_jkt/controller/show_controller.dart';
 import 'package:teater_jkt/screens/home/ShowDescription.dart';
-import '../../widget/TPprimaryHeader.dart';
+import 'package:teater_jkt/widget/TPprimaryHeader.dart';
 
 class HomeScreen extends StatelessWidget {
-  final UserController userController = UserController();
+  final ShowController showController = Get.put(ShowController());
+
   HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        
         child: Column(
           children: [
             TPrimaryHeaderContainer(
@@ -22,10 +22,9 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 50),
-                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                    child: WelcomeSection()
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                    child: WelcomeSection(),
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -46,50 +45,42 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: _buildCategorySection(),
+                    child: _CategorySection(),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 20),
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 200.0,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                aspectRatio: 16 / 9,
-                viewportFraction: 0.8,
-              ),
-              items: [
-                _buildCarouselItem(
-                  context,
-                  'https://via.placeholder.com/600x400',
-                  'Pajama Drive',
-                  'A thrilling show with spectacular performances and captivating storytelling.',
+            Obx(() {
+              if (showController.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return CarouselSlider(
+                options: CarouselOptions(
+                  height: 200.0,
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                  aspectRatio: 16 / 9,
+                  viewportFraction: 0.8,
                 ),
-                _buildCarouselItem(
-                  context,
-                  'https://via.placeholder.com/600x400',
-                  'Boku no Taiyou',
-                  'An inspiring and heartwarming show that touches the soul and mind.',
-                ),
-                _buildCarouselItem(
-                  context,
-                  'https://via.placeholder.com/600x400',
-                  'Another Show',
-                  'Description of another show.',
-                ),
-              ].map((i) => i).toList(),
+                items: showController.shows.map((show) {
+                  return CarouselItem(
+                    imageUrl: show.photo ?? 'https://via.placeholder.com/600x400',
+                    title: show.title ?? 'No Title',
+                    description: show.description ?? 'No Description',
+                  );
+                }).toList(),
+              );
+            }),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: _UpcomingEventsSection(),
             ),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: _buildUpcomingEventsSection(),
-            ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: _buildTopRatedShowsSection(),
+              child: _TopRatedShowsSection(),
             ),
             const SizedBox(height: 20),
           ],
@@ -97,59 +88,23 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
-  
-
- Widget _buildCategorySection() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const Text(
-        'Show Favorite',
-        style: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      ),
-      const SizedBox(height: 10),
-      SizedBox(
-        height: 50,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            _buildCategoryItem('#CaraMeminumRamune'),
-            _buildCategoryItem('#AturanAntiCinta'),
-            _buildCategoryItem('#PajamaDrive'),
-            _buildCategoryItem('#Aitakatta'),
-            _buildCategoryItem('#TunasDibalikSeragam'),
-          ],
-        ),
-      ),
-    ],
-  );
-}
-
-Widget _buildCategoryItem(String title) {
-  return IntrinsicWidth(
-    child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5.0),
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Center(
-        child: Text(
-          title,
-          style: const TextStyle(color: Colors.orange),
-        ),
-      ),
-    ),
-  );
 }
 
 
 
-  Widget _buildCarouselItem(
-      BuildContext context, String imageUrl, String title, String description) {
+class CarouselItem extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final String description;
+
+  CarouselItem({
+    required this.imageUrl,
+    required this.title,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Get.to(() => ShowDescriptionPage(
@@ -167,108 +122,6 @@ Widget _buildCategoryItem(String title) {
         child: Image.network(
           imageUrl,
           fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUpcomingEventsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Upcoming Events',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 10),
-        ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            _buildEventItem('Upcoming Event 1', '2024-07-25'),
-            _buildEventItem('Upcoming Event 2', '2024-08-01'),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildEventItem(String title, String date) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  date,
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ],
-            ),
-            const Icon(Icons.arrow_forward),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTopRatedShowsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Top Rated Shows',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 10),
-        ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            _buildShowItem('Top Rated Show 1', '4.9'),
-            _buildShowItem('Top Rated Show 2', '4.8'),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildShowItem(String title, String rating) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  'Rating: $rating',
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ],
-            ),
-            const Icon(Icons.arrow_forward),
-          ],
         ),
       ),
     );
@@ -304,5 +157,189 @@ class WelcomeSection extends StatelessWidget {
         ],
       );
     });
+  }
+}
+
+
+
+class _CategorySection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Show Favorite',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          height: 50,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              CategoryItem(title: '#CaraMeminumRamune'),
+              CategoryItem(title: '#AturanAntiCinta'),
+              CategoryItem(title: '#PajamaDrive'),
+              CategoryItem(title: '#Aitakatta'),
+              CategoryItem(title: '#TunasDibalikSeragam'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _UpcomingEventsSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Upcoming Events',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        ListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            EventItem(title: 'Upcoming Event 1', date: '2024-07-25'),
+            EventItem(title: 'Upcoming Event 2', date: '2024-08-01'),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _TopRatedShowsSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Top Rated Shows',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        ListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            ShowItem(title: 'Top Rated Show 1', rating: '4.9'),
+            ShowItem(title: 'Top Rated Show 2', rating: '4.8'),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+
+
+class ShowItem extends StatelessWidget {
+  final String title;
+  final String rating;
+
+  ShowItem({required this.title, required this.rating});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  'Rating: $rating',
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              ],
+            ),
+            const Icon(Icons.arrow_forward),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class EventItem extends StatelessWidget {
+  final String title;
+  final String date;
+
+  EventItem({required this.title, required this.date});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  date,
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              ],
+            ),
+            const Icon(Icons.arrow_forward),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+class CategoryItem extends StatelessWidget {
+  final String title;
+
+  CategoryItem({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicWidth(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: const TextStyle(color: Colors.orange),
+          ),
+        ),
+      ),
+    );
   }
 }

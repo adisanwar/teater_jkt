@@ -16,4 +16,9 @@ class Url {
   static const updateContact = '$baseUrl/contacts';
   static const deleteContact = '$baseUrl/contacts';
 
+  static const getShows = '$baseUrl/shows/current';
+  static const createShows = '$baseUrl/shows';
+  static const updateShows = '$baseUrl/shows';
+  static const deleteShows = '$baseUrl/shows';
+
 }
