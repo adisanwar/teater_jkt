@@ -23,8 +23,8 @@ class Register extends StatelessWidget {
                     children: [
                       const Text(
                         'Register',
-                        style:
-                            TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
                         height: 20,
@@ -80,12 +80,12 @@ class Register extends StatelessWidget {
                           return null;
                         },
                       ),
-                      const SizedBox(
-                        height: 5,
+                      SizedBox(
+                        height: 10,
                       ),
-                      const SizedBox(
-                      ),
-                      Obx(() {
+                      SizedBox(
+                        width: double.infinity,
+                        child: Obx(() {
                           if (registerController.isLoading.value) {
                             return const CircularProgressIndicator();
                           } else {
@@ -94,14 +94,14 @@ class Register extends StatelessWidget {
                                   final result =
                                       await registerController.register();
                                   if (result) {
-                                    Get.offAll(() => Login(),
-                                        transition: Transition.rightToLeft);
+                                    Get.to(() => Login(),
+                                        transition: Transition.leftToRight);
                                   } else {
                                     print(result);
                                     Get.snackbar('Error',
                                         'Registration Failed. Please try again.');
                                   }
-                
+
                                   // Get.to(() => const Login(), transition: Transition.rightToLeft);
                                   // // Tampilkan Snackbar
                                   // Get.snackbar(
@@ -115,9 +115,14 @@ class Register extends StatelessWidget {
                                 labelbtn: "Create Account");
                           }
                         }),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       TextButton(
                         onPressed: () {
-                          Get.to(() =>Login());
+                          Get.offAll(() => Login(),
+                              transition: Transition.leftToRight);
                         },
                         child: const Text(
                           'Have an account? Log in',

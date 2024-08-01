@@ -60,42 +60,31 @@ class Login extends StatelessWidget {
                     rememberMe: userController.rememberMe,
                   ),
                   const SizedBox(height: 10),
-                  SizedBox(
-                  width: double.infinity,
-                    child:
-                    // PrimaryButton(
-                    //
-                    //     labelbtn: "Login",
-                    //     onPressed: () {
-                    //       Get.off(() => const NavigationMenu(),
-                    //           transition: Transition.rightToLeft);
-                    //     }),
-                    Obx(() {
-                      if (userController.isLoading.value) {
-                        return const CircularProgressIndicator();
-                      } else {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              width: double.infinity,
-                              child: PrimaryButton(
-                                  labelbtn: "Login",
-                                  onPressed: ()
-                                  async {
-                                    final result = await userController.login();
-                                    if (result) {
-                                      Get.off(() => const NavigationMenu(), transition: Transition.rightToLeft);
-                                    } else {
-                                      Get.snackbar('Error', 'Login Failed. Please try again.');
-                                    }
-                                  },
-                                  ),
-                            ),
-                          ],
-                        );
-                      }
-                    }),
-                  ),
+                  Obx(() {
+                    if (userController.isLoading.value) {
+                      return const CircularProgressIndicator();
+                    } else {
+                      return Column(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: PrimaryButton(
+                                labelbtn: "Login",
+                                onPressed: ()
+                                async {
+                                  final result = await userController.login();
+                                  if (result) {
+                                    Get.off(() => const NavigationMenu(), transition: Transition.rightToLeft);
+                                  } else {
+                                    Get.snackbar('Error', 'Login Failed. Please try again.');
+                                  }
+                                },
+                                ),
+                          ),
+                        ],
+                      );
+                    }
+                  }),
 
                   const SizedBox(height: 10),
                   SizedBox(

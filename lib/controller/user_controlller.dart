@@ -36,15 +36,19 @@ class UserController extends GetxController {
           username: usernameController.text,
           password: passwordController.text,
         );
-        
+
         if (result != null) {
           userModel(result);
           Get.snackbar('Success', 'Login Successful');
           return true;
+        } else {
+          Get.snackbar('Error', 'Login Failed');
+          return false;
         }
       } catch (e) {
         print("Error: $e");
         Get.snackbar('Error', 'Login Failed');
+        return false;
       } finally {
         isLoading(false);
       }
@@ -52,13 +56,13 @@ class UserController extends GetxController {
     return false;
   }
 
- Future<void> getCurrentUser() async {
+  Future<void> getCurrentUser() async {
     isLoading(true);
     try {
       var token = await tokenService.getToken();
       print('bisa cuy $token');
       final result = await userService.getCurrentUser();
-      
+
       print("Current user: $result");
       if (result != null) {
         userModel(result);
@@ -158,5 +162,4 @@ class UserController extends GetxController {
       isLoading(false);
     }
   }
-  
 }
