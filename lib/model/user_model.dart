@@ -1,6 +1,5 @@
-import 'contact_model.dart';
 
-import 'contact_model.dart'; // Pastikan ini sudah diimpor jika model ContactModel berada di file terpisah
+// Pastikan ini sudah diimpor jika model ContactModel berada di file terpisah
 
 class UserModel {
   String? name;

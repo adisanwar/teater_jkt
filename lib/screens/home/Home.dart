@@ -5,6 +5,8 @@ import 'package:teater_jkt/controller/contact_controller.dart';
 import 'package:teater_jkt/controller/show_controller.dart';
 import 'package:teater_jkt/screens/home/ShowDescription.dart';
 import 'package:teater_jkt/widget/TPprimaryHeader.dart';
+import 'package:teater_jkt/api/urls.dart';
+
 
 class HomeScreen extends StatelessWidget {
   final ShowController showController = Get.put(ShowController());
@@ -103,15 +105,24 @@ class CarouselItem extends StatelessWidget {
     required this.description,
   });
 
+  String getFullImageUrl(String imagePath) {
+    final baseUrl = Url.baseImgUrl;
+    final uri = Uri.parse(baseUrl);
+    final relativePath = imagePath.replaceFirst('src/img/', '');
+    final fullUrl = uri.resolve(relativePath).toString();
+    print('Full Image URL: $fullUrl'); // Tambahkan log untuk memeriksa URL
+    return fullUrl;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Get.to(() => ShowDescriptionPage(
-              title: title,
-              description: description,
-              imageUrl: imageUrl,
-            ));
+          title: title,
+          description: description,
+          imageUrl: getFullImageUrl(imageUrl),
+        ));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -120,8 +131,12 @@ class CarouselItem extends StatelessWidget {
           color: Colors.amber,
         ),
         child: Image.network(
-          imageUrl,
+          getFullImageUrl(imageUrl),
           fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            print('Error loading image: $error'); // Log kesalahan memuat gambar
+            return Center(child: Text('Failed to load image'));
+          },
         ),
       ),
     );

@@ -19,8 +19,10 @@ class ShowController extends GetxController {
     isLoading(true);
     try {
       final result = await showService.getShows();
+      print(result);
       if (result != null) {
         shows.assignAll(result);
+
       } else {
         Get.snackbar('Error', 'Failed to fetch shows');
       }
@@ -31,6 +33,7 @@ class ShowController extends GetxController {
       isLoading(false);
     }
   }
+
 
   Future<void> getShowById(int id) async {
     isLoading(true);

@@ -72,7 +72,7 @@ class Data {
 class Theater {
   int? id;
   String? name;
-  Null? photo;
+  String? photo;
   String? location;
   String? capacity;
 

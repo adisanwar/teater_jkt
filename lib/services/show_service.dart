@@ -27,7 +27,7 @@ class ShowService extends GetConnect {
             .map((show) => Data.fromJson(show))
             .toList();
       } else {
-        print('Failed to fetch shows: ${response.statusCode} - ${response.statusText}');
+        // print('Failed to fetch shows: ${response.statusCode} - ${response.statusText}');
         return null;
       }
     } catch (e) {
@@ -35,6 +35,7 @@ class ShowService extends GetConnect {
       return null;
     }
   }
+
 
   Future<Data?> getShowById(int id) async {
     try {
