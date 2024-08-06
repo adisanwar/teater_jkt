@@ -74,9 +74,9 @@ class HomeScreen extends StatelessWidget {
                 }).toList(),
               );
             }),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: _UpcomingEventsSection(),
             ),
             const SizedBox(height: 20),
