@@ -32,3 +32,23 @@ class FormTextField extends StatelessWidget {
     );
   }
 }
+
+// decoration: InputDecoration(
+//                         suffixIcon: IconButton(
+//                           icon: Icon(
+//                             _obscureText.value
+//                                 ? Icons.visibility
+//                                 : Icons.visibility_off,
+//                           ),
+//                           onPressed: () {
+//                             _obscureText.value = !_obscureText.value;
+//                           },
+//                         ),
+//                       ),
+//                       validator: (value) {
+//                         if (value == null || value.isEmpty) {
+//                           return 'Please enter your password';
+//                         }
+//                         return null;
+//                       },
+//                     ),

@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 50),
+                  SizedBox(height: 100),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     child: WelcomeSection(),
@@ -74,9 +74,9 @@ class HomeScreen extends StatelessWidget {
                 }).toList(),
               );
             }),
-            const SizedBox(height: 10),
+            const SizedBox(height: 40),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: _UpcomingEventsSection(),
             ),
             const SizedBox(height: 20),
@@ -121,8 +121,7 @@ class CarouselItem extends StatelessWidget {
         Get.to(() => ShowDescriptionPage(
           title: title,
           description: description,
-          imageUrl: getFullImageUrl(imageUrl),
-        ));
+          imageUrl: getFullImageUrl(imageUrl)));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -162,7 +161,7 @@ class WelcomeSection extends StatelessWidget {
             ),
           ),
           Text(
-            user.firstName ?? 'No Name',
+            user.fullname ?? 'No Name',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -216,9 +215,9 @@ class _UpcomingEventsSection extends StatelessWidget {
           'Upcoming Events',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 5), // Mengurangi jarak antara judul dan list
         ListView(
-          shrinkWrap: true,
+          shrinkWrap: true, // Membuat list menyesuaikan dengan konten
           physics: const NeverScrollableScrollPhysics(),
           children: [
             EventItem(title: 'Upcoming Event 1', date: '2024-07-25'),
@@ -229,6 +228,7 @@ class _UpcomingEventsSection extends StatelessWidget {
     );
   }
 }
+
 
 class _TopRatedShowsSection extends StatelessWidget {
   @override

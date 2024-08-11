@@ -12,6 +12,7 @@ class RegisterController extends GetxController {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController(); // Tambahkan ini
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -19,6 +20,7 @@ class RegisterController extends GetxController {
     nameController.dispose();
     usernameController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose(); // Jangan lupa dispose controller baru
     super.onClose();
   }
 

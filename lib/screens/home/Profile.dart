@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:teater_jkt/controller/contact_controller.dart';
 import 'package:teater_jkt/model/contact_model.dart';
 import 'package:teater_jkt/model/user_model.dart';
+import 'package:teater_jkt/widget/form/PrimaryButton.dart';
+import 'package:teater_jkt/widget/form/ScondaryButton.dart';
 import '../../controller/user_controlller.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -35,15 +37,15 @@ class _ProfilePageState extends State<ProfilePage> {
         }
 
         var user = userController.userModel.value;
-        var contact = userController.contactModel.value;
+        var contact = contactController.contact.value;
 
-            // print(contact.phone);
+        // print(contact.phone);
 
         return SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(height: 20),
-              _buildTopSection(user),
+              _buildTopSection(user, contact),
               const Divider(thickness: 1),
               _buildPersonalInfoSection(contact),
               const Divider(thickness: 1),
@@ -52,23 +54,49 @@ class _ProfilePageState extends State<ProfilePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
+                    SizedBox(
+                      width: double.infinity,
+                      child: SecondaryButton(
+                        label: isEditing ? 'Save' : 'Edit Profile',
+                        onPressed: () {
                           isEditing = !isEditing;
-                        });
-                      },
-                      child: Text(isEditing ? 'Save' : 'Edit Profile'),
+                        },
+                      ),
                     ),
                     const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        userController.logout();
-                        // Handle logout
-                      },
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                      child: const Text('Logout'),
-                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: PrimaryButton(
+                        labelbtn: "Logout",
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Konfirmasi Logout'),
+                                content: const Text('Yakin ingin logout?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('Batal'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // Tutup dialog
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text('Logout'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // Tutup dialog
+                                      userController
+                                          .logout(); // Panggil fungsi logout
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -79,9 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  
-
-  Widget _buildTopSection(UserModel user) {
+  Widget _buildTopSection(UserModel user, ContactModel contact) {
     return Column(
       children: [
         Center(
@@ -97,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         const SizedBox(height: 10),
         Text(
-          user.name ?? 'Nama Belakang',
+          contact.fullname ?? 'Nama Belakang',
           style: const TextStyle(fontSize: 16, color: Colors.grey),
         ),
       ],
@@ -122,6 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
   Widget _buildProfileField(String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

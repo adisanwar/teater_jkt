@@ -1,7 +1,6 @@
 class ContactModel {
   int? id;
-  String? firstName;
-  String? lastName;
+  String? fullname;
   String? photo;
   String? email;
   String? phone;
@@ -12,8 +11,7 @@ class ContactModel {
 
   ContactModel({
     this.id,
-    this.firstName,
-    this.lastName,
+    this.fullname,
     this.photo,
     this.email,
     this.phone,
@@ -25,8 +23,7 @@ class ContactModel {
 
   ContactModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
+    fullname = json['fullname'];
     photo = json['photo'];
     email = json['email'];
     phone = json['phone'];
@@ -39,8 +36,7 @@ class ContactModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['first_name'] = firstName;
-    data['last_name'] = lastName;
+    data['fullname'] = fullname;
     data['photo'] = photo;
     data['email'] = email;
     data['phone'] = phone;
