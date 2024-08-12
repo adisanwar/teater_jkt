@@ -8,6 +8,9 @@ class Url {
   // static const baseImgUrl = 'http://172.130.10.209:3000/';
   // static const baseUrl = 'http://172.130.10.209:3000/api';
 
+  // static const baseUrl = 'http://192.168.9.15:3000/api';
+  // static const baseImgUrl = 'http://192.168.9.15:3000/';
+
   
 
   static const login = '$baseUrl/users/login';
