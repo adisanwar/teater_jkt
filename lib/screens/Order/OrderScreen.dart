@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teater_jkt/screens/ticket/TicketDetail.dart';
+import 'package:teater_jkt/screens/Order/OrderDetailPage.dart';
 
-class TicketsScreen extends StatefulWidget {
-  const TicketsScreen({super.key});
+
+class OrderScreen extends StatefulWidget {
+  const OrderScreen({super.key});
 
   @override
-  _TicketsScreenState createState() => _TicketsScreenState();
+  _OrderScreenState createState() => _OrderScreenState();
 }
 
-class _TicketsScreenState extends State<TicketsScreen> {
-  final Map<String, List<Map<String, String>>> ticketsByStatus = {
+class _OrderScreenState extends State<OrderScreen> {
+  final Map<String, List<Map<String, String>>> ordersByStatus = {
     'On Going': [
       {
         'title': 'Pajama Drive',
@@ -52,22 +53,21 @@ class _TicketsScreenState extends State<TicketsScreen> {
             child: TabBar(
               isScrollable: true,
               indicatorSize: TabBarIndicatorSize.tab,
-
               tabs: [
-                Tab(text: '(${ticketsByStatus['On Going']!.length}) On Going'),
-                Tab(text: '(${ticketsByStatus['Pending Payment']!.length}) Pending Payment'),
-                Tab(text: '(${ticketsByStatus['Sudah Dibayar']!.length}) Sudah Dibayar'),
-                Tab(text: '(${ticketsByStatus['Riwayat Pembelian']!.length}) Riwayat Pembelian'),
+                Tab(text: '(${ordersByStatus['On Going']!.length}) On Going'),
+                Tab(text: '(${ordersByStatus['Pending Payment']!.length}) Pending Payment'),
+                Tab(text: '(${ordersByStatus['Sudah Dibayar']!.length}) Sudah Dibayar'),
+                Tab(text: '(${ordersByStatus['Riwayat Pembelian']!.length}) Riwayat Pembelian'),
               ],
             ),
           ),
         ),
         body: TabBarView(
           children: [
-            TicketList(tickets: ticketsByStatus['On Going']!),
-            TicketList(tickets: ticketsByStatus['Pending Payment']!),
-            TicketList(tickets: ticketsByStatus['Sudah Dibayar']!),
-            TicketList(tickets: ticketsByStatus['Riwayat Pembelian']!),
+            OrderList(orders: ordersByStatus['On Going']!),
+            OrderList(orders: ordersByStatus['Pending Payment']!),
+            OrderList(orders: ordersByStatus['Sudah Dibayar']!),
+            OrderList(orders: ordersByStatus['Riwayat Pembelian']!),
           ],
         ),
       ),
@@ -75,22 +75,22 @@ class _TicketsScreenState extends State<TicketsScreen> {
   }
 }
 
-class TicketList extends StatelessWidget {
-  final List<Map<String, String>> tickets;
+class OrderList extends StatelessWidget {
+  final List<Map<String, String>> orders;
 
-  const TicketList({required this.tickets, super.key});
+  const OrderList({required this.orders, super.key});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: tickets.length,
+      itemCount: orders.length,
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            Get.to(() => TicketDetailPage(
-              title: tickets[index]['title']!,
-              description: tickets[index]['description']!,
-              date: tickets[index]['date']!,
+            Get.to(() => OrderDetailPage(
+              title: orders[index]['title']!,
+              description: orders[index]['description']!,
+              date: orders[index]['date']!,
             ));
           },
           child: Card(
@@ -101,17 +101,17 @@ class TicketList extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    tickets[index]['title']!,
+                    orders[index]['title']!,
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    tickets[index]['description']!,
+                    orders[index]['description']!,
                     style: const TextStyle(fontSize: 16),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Date: ${tickets[index]['date']}',
+                    'Date: ${orders[index]['date']}',
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                 ],

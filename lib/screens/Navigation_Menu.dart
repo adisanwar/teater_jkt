@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:teater_jkt/screens/home/Home.dart';
 import 'package:teater_jkt/screens/home/Profile.dart';
-import 'package:teater_jkt/screens/ticket/TicketScreen.dart';
+import 'package:teater_jkt/screens/Order/OrderScreen.dart';
+import 'package:teater_jkt/screens/ticket/TicketHistoryPage.dart';
 
 class NavigationMenu extends StatefulWidget {
   const NavigationMenu({super.key});
@@ -13,6 +14,7 @@ class NavigationMenu extends StatefulWidget {
 
 class _NavigationMenuState extends State<NavigationMenu> {
   final controller = Get.put(NavigationController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +26,8 @@ class _NavigationMenuState extends State<NavigationMenu> {
           onDestinationSelected: (index) => controller.selectedIndex.value=index,
           destinations: const [
             NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-            NavigationDestination(icon: Icon(Icons.airplane_ticket), label: 'Tickets'),
+            NavigationDestination(icon: Icon(Icons.store_mall_directory), label: 'Order'),
+            NavigationDestination(icon: Icon(Icons.local_mall), label: 'Ticket'),
             NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
           ],
           ),
@@ -41,7 +44,8 @@ class NavigationController extends GetxController {
   
   final screens = [
     HomeScreen(), 
-    const TicketsScreen(),
+    const OrderScreen(),
+    TicketHistoryPage(),
     const ProfilePage()
     
   ];

@@ -70,6 +70,10 @@ class HomeScreen extends StatelessWidget {
                     imageUrl: show.photo ?? 'https://via.placeholder.com/600x400',
                     title: show.title ?? 'No Title',
                     description: show.description ?? 'No Description',
+                    rating: show.rating ?? 'No Rating',
+                      price: show.price ?? 'No Price',
+                    location : show.location ?? 'No Location'
+
                   );
                 }).toList(),
               );
@@ -93,16 +97,21 @@ class HomeScreen extends StatelessWidget {
 }
 
 
-
 class CarouselItem extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String description;
+  final String price;
+  final String rating;
+  final String location;
 
   CarouselItem({
     required this.imageUrl,
     required this.title,
     required this.description,
+    required this.price,
+    required this.rating,
+    required this.location,
   });
 
   String getFullImageUrl(String imagePath) {
@@ -121,7 +130,11 @@ class CarouselItem extends StatelessWidget {
         Get.to(() => ShowDescriptionPage(
           title: title,
           description: description,
-          imageUrl: getFullImageUrl(imageUrl)));
+          imageUrl: getFullImageUrl(imageUrl),
+          price: price,
+          rating: rating,
+          location: location,
+        ));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -134,13 +147,14 @@ class CarouselItem extends StatelessWidget {
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             print('Error loading image: $error'); // Log kesalahan memuat gambar
-            return Center(child: Text('Failed to load image'));
+            return const Center(child: Text('Failed to load image'));
           },
         ),
       ),
     );
   }
 }
+
 
 
 class WelcomeSection extends StatelessWidget {

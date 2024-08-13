@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:teater_jkt/screens/home/Home.dart';
 import 'package:teater_jkt/screens/home/Profile.dart';
 
-import '../screens/ticket/TicketScreen.dart';
+import '../screens/Order/OrderScreen.dart';
 
 
 class NavigationController extends GetxController {
@@ -11,7 +11,7 @@ class NavigationController extends GetxController {
 
   final List<Widget> screens = [
     HomeScreen(),
-    const TicketsScreen(), // Assuming you have a TicketsScreen
+    const OrderScreen(), // Assuming you have a TicketsScreen
     const ProfilePage(),
   ];
 }
