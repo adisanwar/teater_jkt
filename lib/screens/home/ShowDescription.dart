@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:teater_jkt/controller/ticket_controller.dart';
+import 'package:teater_jkt/controller/order_controller.dart';
 import 'package:teater_jkt/screens/Booking/PaymentDetailPage.dart';
 import 'package:teater_jkt/widget/form/PrimaryButton.dart';
+import 'package:teater_jkt/model/order_model.dart'; // Import the OrderModel
 
 class ShowDescriptionPage extends StatelessWidget {
   final String title;
@@ -10,6 +13,11 @@ class ShowDescriptionPage extends StatelessWidget {
   final String price;
   final String rating;
   final String location;
+  final int showId;
+  final int contactId;
+
+  final TicketController ticketController = Get.put(TicketController());
+  final OrderController orderController = Get.put(OrderController());
 
   ShowDescriptionPage({
     required this.title,
@@ -18,6 +26,8 @@ class ShowDescriptionPage extends StatelessWidget {
     required this.price,
     required this.rating,
     required this.location,
+    required this.showId,
+    required this.contactId,
   });
 
   @override
@@ -72,7 +82,7 @@ class ShowDescriptionPage extends StatelessWidget {
                             children: [
                               Text(
                                 'Location:',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -115,15 +125,40 @@ class ShowDescriptionPage extends StatelessWidget {
               width: double.infinity,
               child: PrimaryButton(
                 labelbtn: 'Pesan Tiket',
-                onPressed: () {
-                  Get.to(
-                        () => PaymentDetailsPage(
-                      showTitle: title,
-                      showDescription: description,
-                      showImageUrl: imageUrl,
-                    ),
-                    transition: Transition.rightToLeft,
-                  );
+                onPressed: () async {
+                  final ticket = {
+                    showId,
+                    contactId
+                  };
+                  final ticketCreated = await ticketController.createTicket(ticket);
+
+                  if (ticketCreated != null) {
+                    // Create the order object
+                    final order = Data(
+                      amount: int.parse(price), // Convert price to int
+                      status: 'pending'
+                    );
+
+                    await orderController.createOrder(order);
+
+                    if (order != null) {
+                      Get.to(
+                            () => PaymentDetailsPage(
+                          showTitle: title,
+                          showDescription: description,
+                          showImageUrl: imageUrl,
+                          price: price,
+                          rating: rating,
+                          location: location,
+                        ),
+                        transition: Transition.rightToLeft,
+                      );
+                    } else {
+                      Get.snackbar('Error', 'Failed to create order');
+                    }
+                  } else {
+                    Get.snackbar('Error', 'Failed to create ticket');
+                  }
                 },
               ),
             ),

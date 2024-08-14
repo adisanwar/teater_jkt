@@ -21,13 +21,13 @@ class ShowService extends GetConnect {
   Future<List<Data>?> getShows() async {
     try {
       final response = await get(Url.getShows);
-      print('Response body: ${response.body}');
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.body != null) {
+        // Parse the JSON response and map it to the Data model
         return (response.body['data'] as List)
             .map((show) => Data.fromJson(show))
             .toList();
       } else {
-        // print('Failed to fetch shows: ${response.statusCode} - ${response.statusText}');
+        print('Failed to fetch shows: ${response.statusCode} - ${response.statusText}');
         return null;
       }
     } catch (e) {
@@ -36,11 +36,10 @@ class ShowService extends GetConnect {
     }
   }
 
-
   Future<Data?> getShowById(int id) async {
     try {
       final response = await get('${Url.baseUrl}/shows/$id');
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.body != null) {
         return Data.fromJson(response.body['data']);
       } else {
         print('Failed to fetch show: ${response.statusCode} - ${response.statusText}');

@@ -67,12 +67,13 @@ class HomeScreen extends StatelessWidget {
                 ),
                 items: showController.shows.map((show) {
                   return CarouselItem(
+                    showId: show.id!,
                     imageUrl: show.photo ?? 'https://via.placeholder.com/600x400',
                     title: show.title ?? 'No Title',
                     description: show.description ?? 'No Description',
                     rating: show.rating ?? 'No Rating',
-                      price: show.price ?? 'No Price',
-                    location : show.location ?? 'No Location'
+                      price: show.price.toString() ?? 'No Price',
+                    location : show.theater?.location ?? 'No Location'
 
                   );
                 }).toList(),
@@ -104,6 +105,8 @@ class CarouselItem extends StatelessWidget {
   final String price;
   final String rating;
   final String location;
+  final int showId;
+
 
   CarouselItem({
     required this.imageUrl,
@@ -112,6 +115,7 @@ class CarouselItem extends StatelessWidget {
     required this.price,
     required this.rating,
     required this.location,
+    required this.showId,
   });
 
   String getFullImageUrl(String imagePath) {
@@ -119,15 +123,19 @@ class CarouselItem extends StatelessWidget {
     final uri = Uri.parse(baseUrl);
     final relativePath = imagePath.replaceFirst('src/img/', '');
     final fullUrl = uri.resolve(relativePath).toString();
-    print('Full Image URL: $fullUrl'); // Tambahkan log untuk memeriksa URL
     return fullUrl;
   }
 
   @override
   Widget build(BuildContext context) {
+    final contactController = Get.find<ContactController>();
+    var contact = contactController.contact.value;
+
     return GestureDetector(
       onTap: () {
         Get.to(() => ShowDescriptionPage(
+          contactId: contact.id!,
+          showId: showId,
           title: title,
           description: description,
           imageUrl: getFullImageUrl(imageUrl),
@@ -146,7 +154,6 @@ class CarouselItem extends StatelessWidget {
           getFullImageUrl(imageUrl),
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
-            print('Error loading image: $error'); // Log kesalahan memuat gambar
             return const Center(child: Text('Failed to load image'));
           },
         ),
@@ -154,6 +161,7 @@ class CarouselItem extends StatelessWidget {
     );
   }
 }
+
 
 
 

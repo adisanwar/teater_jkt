@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:teater_jkt/controller/order_controller.dart';
+import 'package:teater_jkt/controller/show_controller.dart';
 import 'dart:convert';
 
 import 'package:teater_jkt/screens/Booking/PaymentWebview.dart';
 
 class PaymentDetailsPage extends StatelessWidget {
+
   final String showTitle;
   final String showDescription;
   final String showImageUrl;
+  final String price;
+  final String rating;
+  final String location;
 
-  const PaymentDetailsPage({
+   PaymentDetailsPage({
     required this.showTitle,
     required this.showDescription,
     required this.showImageUrl,
+    required this.price,
+    required this.rating,
+    required this.location,
     Key? key,
   }) : super(key: key);
 
@@ -40,7 +49,9 @@ class PaymentDetailsPage extends StatelessWidget {
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
-            _buildPaymentDetail('Ticket Price', 'Rp 150.000'),
+            _buildPaymentDetail('Ticket Price', price),
+            _buildPaymentDetail('Rating', rating),
+            _buildPaymentDetail('Location', location),
             const Spacer(),
             Center(
               child: ElevatedButton(
@@ -64,53 +75,9 @@ class PaymentDetailsPage extends StatelessWidget {
   }
 
   Future<void> _proceedToPayment(BuildContext context) async {
-    try {
-      const apiUrl = 'https://api.sandbox.midtrans.com/v2/charge';
-      const serverKey = 'SB-Mid-server-GBLLaOsKtweDUxrvJgWMapbK';  // Ganti dengan Server Key Midtrans Anda
-      final authHeader = 'Basic ' + base64Encode(utf8.encode(serverKey + ':'));
-
-      final transactionData = {
-        "payment_type": "bank_transfer",
-        "transaction_details": {
-          "order_id": "order-id-${DateTime.now().millisecondsSinceEpoch}",
-          "gross_amount": 150000,
-        },
-        "bank_transfer": {
-          "bank": "bca"
-        },
-        "customer_details": {
-          "first_name": "Adit",
-          "last_name": "Khannedy",
-          "email": "adi@example.com",
-          "phone": "08123456789"
-        }
-      };
-
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': authHeader,
-        },
-        body: jsonEncode(transactionData),
-      );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final paymentUrl = data['redirect_url'];
-
-        print(paymentUrl);
-
-        if (paymentUrl != null) {
-          Get.to(() => PaymentWebView(url: paymentUrl));
-        } else {
-          Get.snackbar('Error', 'Failed to get payment URL');
-        }
-      } else {
-        Get.snackbar('Error', 'Failed to create transaction');
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to process payment: $e');
-    }
+    // Logic for handling payment can be added here
+    // Example: Navigate to a webview with the payment URL
+    String paymentUrl = 'https://example.com/payment'; // Replace with actual payment URL
+    Get.to(() => PaymentWebView( url: paymentUrl,));
   }
 }

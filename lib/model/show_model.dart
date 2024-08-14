@@ -28,18 +28,24 @@ class Data {
   String? description;
   String? duration;
   String? rating;
+  int? price;
   int? theaterId;
+  int? showtimeId;
   Theater? theater;
+  Showtime? showtime;
 
   Data(
       {this.id,
-      this.title,
-      this.photo,
-      this.description,
-      this.duration,
-      this.rating,
-      this.theaterId,
-      this.theater});
+        this.title,
+        this.photo,
+        this.description,
+        this.duration,
+        this.rating,
+        this.price,
+        this.theaterId,
+        this.showtimeId,
+        this.theater,
+        this.showtime});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -48,9 +54,14 @@ class Data {
     description = json['description'];
     duration = json['duration'];
     rating = json['rating'];
+    price = json['price'];
     theaterId = json['theaterId'];
+    showtimeId = json['showtimeId'];
     theater =
-        json['theater'] != null ? new Theater.fromJson(json['theater']) : null;
+    json['theater'] != null ? new Theater.fromJson(json['theater']) : null;
+    showtime = json['showtime'] != null
+        ? new Showtime.fromJson(json['showtime'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -61,9 +72,14 @@ class Data {
     data['description'] = this.description;
     data['duration'] = this.duration;
     data['rating'] = this.rating;
+    data['price'] = this.price;
     data['theaterId'] = this.theaterId;
+    data['showtimeId'] = this.showtimeId;
     if (this.theater != null) {
       data['theater'] = this.theater!.toJson();
+    }
+    if (this.showtime != null) {
+      data['showtime'] = this.showtime!.toJson();
     }
     return data;
   }
@@ -93,6 +109,28 @@ class Theater {
     data['photo'] = this.photo;
     data['location'] = this.location;
     data['capacity'] = this.capacity;
+    return data;
+  }
+}
+
+class Showtime {
+  int? id;
+  String? showDate;
+  String? showTime;
+
+  Showtime({this.id, this.showDate, this.showTime});
+
+  Showtime.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    showDate = json['showDate'];
+    showTime = json['showTime'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['showDate'] = this.showDate;
+    data['showTime'] = this.showTime;
     return data;
   }
 }

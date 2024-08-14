@@ -31,4 +31,16 @@ class Url {
   static const createShows = '$baseUrl/shows';
   static const updateShows = '$baseUrl/shows';
   static const deleteShows = '$baseUrl/shows';
+
+  static const getTickets = '$baseUrl/shows/current';
+  static const createTickets = '$baseUrl/shows';
+  static const updateTickets = '$baseUrl/shows';
+  static const deleteTickets = '$baseUrl/shows';
+
+  static const getOrders = '$baseUrl/shows/current';
+  static const createOrders = '$baseUrl/shows';
+  static const updateOrders = '$baseUrl/shows';
+  static const deleteOrders = '$baseUrl/shows';
+
 }
+
