@@ -125,41 +125,62 @@ class ShowDescriptionPage extends StatelessWidget {
               width: double.infinity,
               child: PrimaryButton(
                 labelbtn: 'Pesan Tiket',
-                onPressed: () async {
-                  final ticket = {
-                    showId,
-                    contactId
-                  };
-                  final ticketCreated = await ticketController.createTicket(ticket);
+               onPressed: () async {
+  //               final tickets = (context
+  //               )
+  // final ticket = Data (
+  //   showId: showId,
+  //   contactId: contactId,
+  //   // Add other necessary fields if required
+  // );
 
-                  if (ticketCreated != null) {
-                    // Create the order object
-                    final order = Data(
-                      amount: int.parse(price), // Convert price to int
-                      status: 'pending'
-                    );
+  // print(ticket);
 
-                    await orderController.createOrder(order);
+await ticketController.createTicket();
 
-                    if (order != null) {
-                      Get.to(
-                            () => PaymentDetailsPage(
-                          showTitle: title,
-                          showDescription: description,
-                          showImageUrl: imageUrl,
-                          price: price,
-                          rating: rating,
-                          location: location,
-                        ),
-                        transition: Transition.rightToLeft,
-                      );
-                    } else {
-                      Get.snackbar('Error', 'Failed to create order');
-                    }
-                  } else {
-                    Get.snackbar('Error', 'Failed to create ticket');
-                  }
-                },
+   Get.to(
+        () => PaymentDetailsPage(
+          showTitle: title,
+          showDescription: description,
+          showImageUrl: imageUrl,
+          price: price,
+          rating: rating,
+          location: location,
+        ),
+        transition: Transition.rightToLeft,
+      );
+
+  // if (createdTicket != null) {
+  //   // Use the created ticket's ID
+  //   final order = Data(
+  //     amount: int.parse(price), // Convert price to int
+  //     status: 'pending',
+  //     ticketId: createdTicket.id, // Assign the created ticket's ID here
+  //     // Add other necessary fields if required
+  //   );
+
+  //   final orderCreated = await orderController.createOrder(order);
+
+  //   if (orderCreated) {
+  //     Get.to(
+  //       () => PaymentDetailsPage(
+  //         showTitle: title,
+  //         showDescription: description,
+  //         showImageUrl: imageUrl,
+  //         price: price,
+  //         rating: rating,
+  //         location: location,
+  //       ),
+  //       transition: Transition.rightToLeft,
+  //     );
+  //   } else {
+  //     Get.snackbar('Error', 'Failed to create order');
+  //   }
+  // } else {
+  //   Get.snackbar('Error', 'Failed to create ticket');
+  // }
+}
+
               ),
             ),
             const SizedBox(height: 20),

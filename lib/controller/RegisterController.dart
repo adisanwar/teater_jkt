@@ -28,9 +28,9 @@ class RegisterController extends GetxController {
     if (formKey.currentState?.validate() ?? false) {
       isLoading(true);
       try {
-        print("Name: ${nameController.text}");
-        print("Username: ${usernameController.text}");
-        print("Password: ${passwordController.text}");
+        // print("Name: ${nameController.text}");
+        // print("Username: ${usernameController.text}");
+        // print("Password: ${passwordController.text}");
 
         final result = await userRepo.registerUser(
           name: nameController.text,

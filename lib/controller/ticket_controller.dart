@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:teater_jkt/model/order_model.dart';
 import 'package:teater_jkt/model/ticket_model.dart';
 import 'package:teater_jkt/services/ticket-service.dart';
 
@@ -8,6 +9,7 @@ class TicketController extends GetxController {
   var isLoading = false.obs;
   var tickets = <Data>[].obs;
   var ticket = Data().obs;
+  final Ticket = TicketModel();
 
   @override
   void onInit() {
@@ -49,25 +51,38 @@ class TicketController extends GetxController {
     }
   }
 
-  Future<void> createTicket(Data ticket) async {
-    isLoading(true);
-    try {
-      final success = await ticketService.createTicket(ticket);
-      if (success) {
-        fetchTickets();
-        Get.snackbar('Success', 'Ticket Created Successfully');
-      } else {
-        Get.snackbar('Error', 'Failed to create ticket');
-      }
-    } catch (e) {
-      print("Error creating ticket: $e");
-      Get.snackbar('Error', 'Failed to create ticket');
-    } finally {
-      isLoading(false);
-    }
-  }
+   Future<TicketModel?> createStaticTicket() async {
+  isLoading(true);
+  try {
+    // Data statis untuk membuat tiket
+    final staticTicket =(
+      seatNumber: 'A12',
+      photo: 'https://example.com/photos/seat_a12.png',
+      purchaseDate: '2024-08-14',
+      contactId: 101,
+      showId: 202,
+    );
 
-  Future<void> updateTicket(int id, Data ticket) async {
+    final TicketModel? createdTicket = await ticketService.createTicket(staticTicket);
+    if (createdTicket != null) {
+      fetchTickets();
+      Get.snackbar('Success', 'Static Ticket Created Successfully');
+      return createdTicket;
+    } else {
+      Get.snackbar('Error', 'Failed to create static ticket');
+      return null;
+    }
+  } catch (e) {
+    print("Error creating static ticket: $e");
+    Get.snackbar('Error', 'Failed to create static ticket');
+    return null;
+  } finally {
+    isLoading(false);
+  }
+}
+
+
+  Future<void> updateTicket(int id, ticket) async {
     isLoading(true);
     try {
       final success = await ticketService.updateTicket(id, ticket);

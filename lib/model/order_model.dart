@@ -27,15 +27,19 @@ class Data {
   int? amount;
   String? status;
   String? paymentUrl;
+  int? ticketId;
   Ticket? ticket;
 
   Data(
-      {this.id,
+      {
+        this.id,
         this.orderId,
         this.amount,
         this.status,
         this.paymentUrl,
-        this.ticket});
+        this.ticket, 
+        this.ticketId, 
+        });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -43,6 +47,7 @@ class Data {
     amount = json['amount'];
     status = json['status'];
     paymentUrl = json['paymentUrl'];
+    ticketId = json['ticketId'];
     ticket =
     json['ticket'] != null ? new Ticket.fromJson(json['ticket']) : null;
   }
@@ -54,6 +59,7 @@ class Data {
     data['amount'] = this.amount;
     data['status'] = this.status;
     data['paymentUrl'] = this.paymentUrl;
+    data['ticketId'] = this.ticketId;
     if (this.ticket != null) {
       data['ticket'] = this.ticket!.toJson();
     }
