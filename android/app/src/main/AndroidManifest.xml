@@ -1,7 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-
-    >
+    xmlns:tools="http://schemas.android.com/tools">
     <application
         android:label="teater_jkt"
         android:name="${applicationName}"
@@ -24,7 +22,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-                <uses-permission android:name="android.permission.INTERNET" />
             </intent-filter>
         </activity>
         <meta-data

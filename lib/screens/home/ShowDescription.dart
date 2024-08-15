@@ -126,57 +126,62 @@ class ShowDescriptionPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: PrimaryButton(
-                labelbtn: 'Pesan Tiket',
-                onPressed: () async {
-                  // Capture data dynamically during the button press
-                  // final seatNumber = 'A12'; // Example seat number, can be dynamic
-                  // final photoUrl = 'https://example.com/photos/seat_a12.png';
+                  labelbtn: 'Pesan Tiket',
+                  onPressed: () async {
+                    // Capture data dynamically during the button press
+                    // final seatNumber = 'A12'; // Example seat number, can be dynamic
+                    // final photoUrl = 'https://example.com/photos/seat_a12.png';
 
-                  // Create a Ticket object with the captured data
-                  final ticket = Ticket(
-                    // seatNumber: seatNumber,
-                    // photo: photoUrl,
-                    contactId: contactId,
-                    showId: showId,
-                  );
-
-                  // Use the controller to create the ticket
-                  final createdTicket = await ticketController.createTicket(
-                      ticket);
-
-                  // Convert the price to an integer for the order
-                  final int? ticketPrice = int.tryParse(price);
-
-                  if (createdTicket != null) {
-                    final order = Order(
-                      ticketId: createdTicket.id,
-                      amount: ticketPrice,
+                    // Create a Ticket object with the captured data
+                    final ticket = Ticket(
+                      // seatNumber: seatNumber,
+                      // photo: photoUrl,
+                      contactId: contactId,
+                      showId: showId,
                     );
 
-                    // Create the order and retrieve the order object
-                    final createdOrder = await orderController.createOrder(
-                        order);
+                    // Use the controller to create the ticket
+                    final createdTicket =
+                        await ticketController.createTicket(ticket);
+
+                    // Convert the price to an integer for the order
+                    final int? ticketPrice = int.tryParse(price);
+
+                    if (createdTicket != null) {
+                      final order = Order(
+                        ticketId: createdTicket.id,
+                        amount: ticketPrice,
+                      );
+
+                      // Create the order and retrieve the order object
+                      final createdOrder = await orderController.createOrder(order);
+                      final getOrders = await orderController.getOrderById(createdTicket.id!);
+
+                      print('Coba guys ${getOrders}');
 
 
                       Get.snackbar('Success', 'Ticket Created Successfully');
 
+                      print('Coba Apa isinya - ${createdOrder?.paymentUrl} - ${createdOrder}');
+                      
+                      
+
                       // Navigate to the Payment Details Page with the paymentUrl
                       Get.to(
-                            () =>
-                            PaymentDetailsPage(
-                              showTitle: title,
-                              showDescription: description,
-                              showImageUrl: imageUrl,
-                              price: price,
-                              rating: rating,
-                              location: location,
-                              paymentUrl: createdOrder?.paymentUrl ?? ''// Pass the paymentUrl here
+                        () => PaymentDetailsPage(
+                            showTitle: title,
+                            showDescription: description,
+                            showImageUrl: imageUrl,
+                            price: price,
+                            rating: rating,
+                            location: location,
+                            paymentUrl: createdOrder?.paymentUrl ??
+                                '' // Pass the paymentUrl here,
                             ),
                         transition: Transition.rightToLeft,
                       );
-
-                  }
-                }),
+                    }
+                  }),
             ),
             const SizedBox(height: 20),
           ],

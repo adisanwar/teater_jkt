@@ -62,7 +62,7 @@ class TicketController extends GetxController {
       //   showId: 2,
       // );
 
-      final Ticket? Tickets = await ticketService.createTicket(ticket);
+      final Tickets = await ticketService.createTicket(ticket);
       if (Tickets != null) {
         fetchTickets();
         // Get.snackbar('Success', 'Ticket Created Successfully');

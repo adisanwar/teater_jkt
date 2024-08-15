@@ -4,12 +4,14 @@ class OrderDetailPage extends StatelessWidget {
   final String title;
   final String description;
   final String date;
+  final String status;
 
   const OrderDetailPage({
     required this.title,
     required this.description,
     required this.date,
-    super.key,
+    required this.status,
+    super.key, 
   });
 
   @override
@@ -35,6 +37,16 @@ class OrderDetailPage extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               'Date: $date',
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Date: $date',
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Status: $status',
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
             const Spacer(),

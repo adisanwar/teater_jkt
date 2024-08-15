@@ -79,7 +79,7 @@ class PaymentDetailsPage extends StatelessWidget {
   Future<void> _proceedToPayment(BuildContext context) async {
     // Logic for handling payment can be added here
     // Example: Navigate to a webview with the payment URL
-    String paymentUrl = 'https://example.com/payment'; // Replace with actual payment URL
-    Get.to(() => PaymentWebView( url: paymentUrl,));
+    // String paymentUrl = 'https://example.com/payment'; // Replace with actual payment URL
+    Get.to(() => PaymentWebView( paymentUrl: paymentUrl));
   }
 }

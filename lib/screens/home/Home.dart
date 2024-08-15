@@ -299,7 +299,7 @@ class ShowItem extends StatelessWidget {
             print('$title button clicked');
             Get.to(
                     () => PaymentWebView(
-                 url: 'https://google.com',
+                 paymentUrl: 'https://google.com',
             ));
           },
           child: const Text('Detail'),

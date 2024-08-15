@@ -21,7 +21,7 @@ class OrderController extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchOrders() async {
+  Future<Order?> fetchOrders() async {
     isLoading(true);
     try {
       final result = await orderService.getOrders();
@@ -38,7 +38,7 @@ class OrderController extends GetxController {
     }
   }
 
-  Future<void> getOrderById(int id) async {
+  Future<Order?> getOrderById(int id) async {
     isLoading(true);
     try {
       final result = await orderService.getOrderById(id);
