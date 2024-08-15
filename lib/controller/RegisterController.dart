@@ -7,7 +7,7 @@ class RegisterController extends GetxController {
   final RegisterRepo userRepo = RegisterRepo();
 
   var isLoading = false.obs;
-  var userModel = UserModel().obs;
+  var userModel = User().obs;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();

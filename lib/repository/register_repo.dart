@@ -6,7 +6,7 @@ import '../model/user_model.dart';
 class RegisterRepo {
   final storage = GetStorage();
 
-  Future<UserModel?> registerUser({
+  Future<User?> registerUser({
     required String name,
     required String username,
     required String password,
@@ -24,7 +24,7 @@ class RegisterRepo {
       print("API Response Body: ${response.body}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final userModel = UserModel.fromJson(response.body);
+        final userModel = User.fromJson(response.body);
         // Save the token separately for easy access
         storage.write('token', userModel.token);
         storage.write('user', userModel.toJson());

@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:teater_jkt/controller/contact_controller.dart';
 import 'package:teater_jkt/controller/show_controller.dart';
+import 'package:teater_jkt/screens/Booking/PaymentWebview.dart';
 import 'package:teater_jkt/screens/home/ShowDescription.dart';
 import 'package:teater_jkt/widget/TPprimaryHeader.dart';
 import 'package:teater_jkt/api/urls.dart';
+import 'package:teater_jkt/widget/form/PrimaryButton.dart';
 
 
 class HomeScreen extends StatelessWidget {
@@ -282,33 +284,25 @@ class ShowItem extends StatelessWidget {
   final String title;
   final String rating;
 
-  ShowItem({required this.title, required this.rating});
+  const ShowItem({required this.title, required this.rating});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  'Rating: $rating',
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ],
-            ),
-            const Icon(Icons.arrow_forward),
-          ],
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      child: ListTile(
+        title: Text(title),
+        subtitle: Text('Rating: $rating'),
+        trailing: ElevatedButton(
+          onPressed: () {
+            // Tambahkan logika untuk tombol di sini
+            print('$title button clicked');
+            Get.to(
+                    () => PaymentWebView(
+                 url: 'https://google.com',
+            ));
+          },
+          child: const Text('Detail'),
         ),
       ),
     );

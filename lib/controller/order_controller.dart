@@ -1,13 +1,19 @@
 import 'package:get/get.dart';
 import 'package:teater_jkt/model/order_model.dart';
 import 'package:teater_jkt/services/order_service.dart';
+import '../services/ticket-service.dart';
+
+import '../model/ticket_model.dart';
 
 class OrderController extends GetxController {
   final OrderService orderService = Get.put(OrderService());
+  final TicketService ticketService = Get.put(TicketService());
 
   var isLoading = false.obs;
-  var orders = <Data>[].obs;
-  var order = Data().obs;
+  var orders = <Order>[].obs;  // Change Data to Order
+  var order = Order().obs;
+
+  // get ticketService => null;  // Change Data to Order
 
   @override
   void onInit() {
@@ -37,7 +43,7 @@ class OrderController extends GetxController {
     try {
       final result = await orderService.getOrderById(id);
       if (result != null) {
-        order(result);
+        order.value = result;  // Use .value to update the observable Order
       } else {
         Get.snackbar('Error', 'Failed to fetch order');
       }
@@ -49,25 +55,61 @@ class OrderController extends GetxController {
     }
   }
 
-  Future<void> createOrder(Data order) async {
+  Future<Order?> createOrder(Order order) async {
     isLoading(true);
     try {
-      final success = await orderService.createOrder(order);
-      if (success) {
-        fetchOrders();
-        Get.snackbar('Success', 'Order Created Successfully');
+      final createdOrder = await orderService.createOrder(order);
+      if (createdOrder != null) {
+        fetchOrders(); // Refresh the orders list if needed
+        return createdOrder; // Return the created order
       } else {
         Get.snackbar('Error', 'Failed to create order');
+        return null; // Return null if creation failed
       }
     } catch (e) {
       print("Error creating order: $e");
       Get.snackbar('Error', 'Failed to create order');
+      return null; // Return null on error
     } finally {
       isLoading(false);
     }
   }
 
-  Future<void> updateOrder(int id, Data order) async {
+
+  // Future<void> createOrderAfterTicket(Ticket ticket) async {
+  //   isLoading(true);
+  //   try {
+  //     // Step 1: Create Ticket
+  //     final createdTicket = await ticketService.createTicket(ticket);
+  //     if (createdTicket != null && createdTicket.id != null) {
+  //       // Step 2: Use the Ticket ID to create an Order
+  //       final order = Order(
+  //         ticketId: createdTicket.id, // Use the created ticket's ID
+  //         amount: ticket.amount, // Assuming amount is part of the ticket
+  //         status: 'pending', // Default order status
+  //         paymentUrl: null, // Payment URL can be set later
+  //       );
+  //
+  //       final createdOrder = await orderService.createOrder(order);
+  //       if (createdOrder != null) {
+  //         fetchOrders(); // Refresh orders list
+  //         Get.snackbar('Success', 'Order Created Successfully');
+  //       } else {
+  //         Get.snackbar('Error', 'Failed to create order');
+  //       }
+  //     } else {
+  //       Get.snackbar('Error', 'Failed to create ticket');
+  //     }
+  //   } catch (e) {
+  //     print("Error creating ticket and order: $e");
+  //     Get.snackbar('Error', 'Failed to create ticket and order');
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
+
+
+  Future<void> updateOrder(int id, Order order) async {
     isLoading(true);
     try {
       final success = await orderService.updateOrder(id, order);

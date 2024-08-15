@@ -13,8 +13,8 @@ class UserController extends GetxController {
   final tokenService = TokenService();
 
   var isLoading = false.obs;
-  var userModel = UserModel().obs;
-  var contactModel = ContactModel().obs;
+  var userModel = User().obs;
+  var contactModel = Contact().obs;
   var rememberMe = false.obs;
 
   final TextEditingController usernameController = TextEditingController();
@@ -111,7 +111,7 @@ class UserController extends GetxController {
   //   }
   // }
 
-  Future<void> updateUser(int id, UserModel user) async {
+  Future<void> updateUser(int id, User user) async {
     isLoading(true);
     try {
       final success = await userService.updateUser(id, user);

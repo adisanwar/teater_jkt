@@ -18,13 +18,13 @@ class ContactService extends GetConnect {
     super.onInit();
   }
 
-  Future<ContactModel?> getContact() async {
+  Future<Contact?> getContact() async {
     try {
       final response = await get(Url.getContact);
       print('Response body: ${response.body}');
       if (response.statusCode == 200) {
         // Mendapatkan kontak pertama dari daftar kontak
-        return ContactModel.fromJson(response.body['data'][0]);
+        return Contact.fromJson(response.body['data'][0]);
       } else {
         print('Failed to fetch contact: ${response.statusCode} - ${response.statusText}');
         return null;
@@ -35,7 +35,7 @@ class ContactService extends GetConnect {
     }
   }
 
-  Future<bool> createContact(ContactModel contact) async {
+  Future<bool> createContact(Contact contact) async {
     try {
       final response = await post(Url.createContact, contact.toJson());
       return response.statusCode == 201;
@@ -45,7 +45,7 @@ class ContactService extends GetConnect {
     }
   }
 
-  Future<bool> updateContact(int id, ContactModel contact) async {
+  Future<bool> updateContact(int id, Contact contact) async {
     try {
       final response = await put('${Url.updateContact}/$id', contact.toJson());
       return response.statusCode == 200;

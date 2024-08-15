@@ -1,13 +1,15 @@
-class OrderModel {
-  List<Data>? data;
+import 'package:teater_jkt/model/ticket_model.dart';
 
-  OrderModel({this.data});
+class Data {
+  List<Order>? data;
 
-  OrderModel.fromJson(Map<String, dynamic> json) {
+  Data({this.data});
+
+  Data.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <Order>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new Order.fromJson(v));
       });
     }
   }
@@ -21,7 +23,7 @@ class OrderModel {
   }
 }
 
-class Data {
+class Order {
   int? id;
   String? orderId;
   int? amount;
@@ -30,7 +32,7 @@ class Data {
   int? ticketId;
   Ticket? ticket;
 
-  Data(
+  Order(
       {
         this.id,
         this.orderId,
@@ -41,7 +43,7 @@ class Data {
         this.ticketId, 
         });
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     orderId = json['orderId'];
     amount = json['amount'];
@@ -67,69 +69,4 @@ class Data {
   }
 }
 
-class Ticket {
-  int? id;
-  String? seatNumber;
-  Null? purchaseDate;
-  int? contactId;
-  int? showId;
-  Show? show;
 
-  Ticket(
-      {this.id,
-        this.seatNumber,
-        this.purchaseDate,
-        this.contactId,
-        this.showId,
-        this.show});
-
-  Ticket.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    seatNumber = json['seatNumber'];
-    purchaseDate = json['purchaseDate'];
-    contactId = json['contactId'];
-    showId = json['showId'];
-    show = json['show'] != null ? new Show.fromJson(json['show']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['seatNumber'] = this.seatNumber;
-    data['purchaseDate'] = this.purchaseDate;
-    data['contactId'] = this.contactId;
-    data['showId'] = this.showId;
-    if (this.show != null) {
-      data['show'] = this.show!.toJson();
-    }
-    return data;
-  }
-}
-
-class Show {
-  int? id;
-  String? title;
-  String? description;
-  String? duration;
-  String? rating;
-
-  Show({this.id, this.title, this.description, this.duration, this.rating});
-
-  Show.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    description = json['description'];
-    duration = json['duration'];
-    rating = json['rating'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['duration'] = this.duration;
-    data['rating'] = this.rating;
-    return data;
-  }
-}

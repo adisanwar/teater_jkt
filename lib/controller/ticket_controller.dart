@@ -7,9 +7,8 @@ class TicketController extends GetxController {
   final TicketService ticketService = Get.put(TicketService());
 
   var isLoading = false.obs;
-  var tickets = <Data>[].obs;
-  var ticket = Data().obs;
-  final Ticket = TicketModel();
+  var tickets = <Ticket>[].obs;
+  var ticket = Ticket().obs;
 
   @override
   void onInit() {
@@ -39,7 +38,7 @@ class TicketController extends GetxController {
     try {
       final result = await ticketService.getTicketById(id);
       if (result != null) {
-        ticket(result);
+        ticket.value = result; // Use .value to assign the Ticket object
       } else {
         Get.snackbar('Error', 'Failed to fetch ticket');
       }
@@ -51,38 +50,38 @@ class TicketController extends GetxController {
     }
   }
 
-   Future<TicketModel?> createStaticTicket() async {
-  isLoading(true);
-  try {
-    // Data statis untuk membuat tiket
-    final staticTicket =(
-      seatNumber: 'A12',
-      photo: 'https://example.com/photos/seat_a12.png',
-      purchaseDate: '2024-08-14',
-      contactId: 101,
-      showId: 202,
-    );
+  Future<Ticket?> createTicket(ticket) async {
+    isLoading(true);
+    try {
+      // Data statis untuk membuat tiket
+      // final ticket = Ticket(
+      //   seatNumber: 'A12',
+      //   photo: 'https://example.com/photos/seat_a12.png',
+      //   // purchaseDate: '2024-08-14',
+      //   contactId: 1,
+      //   showId: 2,
+      // );
 
-    final TicketModel? createdTicket = await ticketService.createTicket(staticTicket);
-    if (createdTicket != null) {
-      fetchTickets();
-      Get.snackbar('Success', 'Static Ticket Created Successfully');
-      return createdTicket;
-    } else {
-      Get.snackbar('Error', 'Failed to create static ticket');
+      final Ticket? Tickets = await ticketService.createTicket(ticket);
+      if (Tickets != null) {
+        fetchTickets();
+        // Get.snackbar('Success', 'Ticket Created Successfully');
+        return Tickets;
+      } else {
+        Get.snackbar('Error', 'Failed to create ticket');
+        return null;
+      }
+    } catch (e) {
+      print("Error creating ticket: $e");
+      print(ticket);
+      Get.snackbar('Error', 'Failed to create ticket');
       return null;
+    } finally {
+      isLoading(false);
     }
-  } catch (e) {
-    print("Error creating static ticket: $e");
-    Get.snackbar('Error', 'Failed to create static ticket');
-    return null;
-  } finally {
-    isLoading(false);
   }
-}
 
-
-  Future<void> updateTicket(int id, ticket) async {
+  Future<void> updateTicket(int id, Ticket ticket) async {
     isLoading(true);
     try {
       final success = await ticketService.updateTicket(id, ticket);

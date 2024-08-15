@@ -107,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildTopSection(UserModel user, ContactModel contact) {
+  Widget _buildTopSection(User user, Contact contact) {
     return Column(
       children: [
         Center(
@@ -130,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildPersonalInfoSection(ContactModel contact) {
+  Widget _buildPersonalInfoSection(Contact contact) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(

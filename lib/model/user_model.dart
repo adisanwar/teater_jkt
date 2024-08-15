@@ -1,14 +1,14 @@
 
 // Pastikan ini sudah diimpor jika model ContactModel berada di file terpisah
 
-class UserModel {
+class User {
   String? name;
   String? username;
   String? password;
   String? token;
   bool? isAdmin;
 
-  UserModel({
+  User({
     this.name,
     this.username,
     this.password,
@@ -16,7 +16,7 @@ class UserModel {
     this.isAdmin,
   });
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  User.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     username = json['username'];
     password = json['password'];

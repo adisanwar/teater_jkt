@@ -6,7 +6,7 @@ class ContactController extends GetxController {
   final ContactService contactService = Get.put(ContactService());
 
   var isLoading = false.obs;
-  var contact = ContactModel().obs;
+  var contact = Contact().obs;
 
   @override
   void onInit() {
@@ -31,7 +31,7 @@ class ContactController extends GetxController {
     }
   }
 
-  Future<void> createContact(ContactModel contact) async {
+  Future<void> createContact(Contact contact) async {
     isLoading(true);
     try {
       final success = await contactService.createContact(contact);
@@ -49,7 +49,7 @@ class ContactController extends GetxController {
     }
   }
 
-  Future<void> updateContact(int id, ContactModel contact) async {
+  Future<void> updateContact(int id, Contact contact) async {
     isLoading(true);
     try {
       final success = await contactService.updateContact(id, contact);

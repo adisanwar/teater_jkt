@@ -1,4 +1,4 @@
-class ContactModel {
+class Contact {
   int? id;
   String? fullname;
   String? photo;
@@ -9,7 +9,7 @@ class ContactModel {
   BigInt? nationalId;
   String? username;
 
-  ContactModel({
+  Contact({
     this.id,
     this.fullname,
     this.photo,
@@ -21,7 +21,7 @@ class ContactModel {
     this.username,
   });
 
-  ContactModel.fromJson(Map<String, dynamic> json) {
+  Contact.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     fullname = json['fullname'];
     photo = json['photo'];

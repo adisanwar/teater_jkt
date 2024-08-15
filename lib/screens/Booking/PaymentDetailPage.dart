@@ -15,6 +15,7 @@ class PaymentDetailsPage extends StatelessWidget {
   final String price;
   final String rating;
   final String location;
+  final String paymentUrl;
 
    PaymentDetailsPage({
     required this.showTitle,
@@ -23,6 +24,7 @@ class PaymentDetailsPage extends StatelessWidget {
     required this.price,
     required this.rating,
     required this.location,
+     required this.paymentUrl,
     Key? key,
   }) : super(key: key);
 

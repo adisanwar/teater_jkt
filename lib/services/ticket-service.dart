@@ -18,13 +18,13 @@ class TicketService extends GetConnect {
     super.onInit();
   }
 
-  Future<List<Data>?> getTickets() async {
+  Future<List<Ticket>?> getTickets() async {
     try {
       final response = await get(Url.getTickets);
       print('Response body: ${response.body}');
       if (response.statusCode == 200) {
         return (response.body['data'] as List)
-            .map((ticket) => Data.fromJson(ticket))
+            .map((ticket) => Ticket.fromJson(ticket))
             .toList();
       } else {
         print('Failed to fetch tickets: ${response.statusCode} - ${response.statusText}');
@@ -36,11 +36,11 @@ class TicketService extends GetConnect {
     }
   }
 
-  Future<Data?> getTicketById(int id) async {
+  Future<Ticket?> getTicketById(int id) async {
     try {
       final response = await get('${Url.baseUrl}/tickets/$id');
       if (response.statusCode == 200) {
-        return Data.fromJson(response.body['data']);
+        return Ticket.fromJson(response.body['data']);
       } else {
         print('Failed to fetch ticket: ${response.statusCode} - ${response.statusText}');
         return null;
@@ -51,17 +51,36 @@ class TicketService extends GetConnect {
     }
   }
 
-  Future<bool> createTicket(Data ticket) async {
+  Future<Ticket?> createTicket(Ticket ticket) async {
     try {
       final response = await post(Url.createTickets, ticket.toJson());
-      return response.statusCode == 201;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Success creating ticket: $ticket');
+        return Ticket.fromJson(response.body['data']);
+      } else {
+        print('Failed to create ticket: ${response.statusCode} - ${response.statusText } - ${response.body}');
+        return null;
+      }
     } catch (e) {
-      print("Error creating ticket: $e");
-      return false;
+      if (e is Response) {
+        final statusCode = e.statusCode ?? 'Unknown';
+        final statusText = e.statusText ?? 'Unknown';
+        final responseData = e.bodyString ?? 'No response body';
+
+        print("Error creating ticket: $statusCode - $statusText");
+        print("Response Data: $responseData");
+
+        // You can return null or throw an exception if you want to handle it differently in the controller
+        return null;
+      } else {
+        print("Error creating ticket: $e");
+        return null;
+      }
     }
   }
 
-  Future<bool> updateTicket(int id, Data ticket) async {
+
+  Future<bool> updateTicket(int id, Ticket ticket) async {
     try {
       final response = await put('${Url.updateTickets}/$id', ticket.toJson());
       return response.statusCode == 200;

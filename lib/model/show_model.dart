@@ -1,30 +1,30 @@
 import 'package:teater_jkt/model/showtime_model.dart';
 import 'package:teater_jkt/model/theater_model.dart';
 
-class ShowModel {
-  List<Data>? data;
+class Data {
+  List<Show>? shows;
 
-  ShowModel({this.data});
+  Data({this.shows});
 
-  ShowModel.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <Data>[];
+      shows = <Show>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        shows!.add(Show.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    if (this.shows != null) {
+      data['data'] = this.shows!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Data {
+class Show {
   int? id;
   String? title;
   String? photo;
@@ -34,10 +34,10 @@ class Data {
   int? price;
   int? theaterId;
   int? showtimeId;
-  TheaterModel? theater;
-  ShowtimeModel? showtime;
+  Theater? theater;
+  Showtime? showtime;
 
-  Data({
+  Show({
     this.id,
     this.title,
     this.photo,
@@ -51,7 +51,7 @@ class Data {
     this.showtime,
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Show.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     photo = json['photo'];
@@ -62,10 +62,10 @@ class Data {
     theaterId = json['theaterId'];
     showtimeId = json['showtimeId'];
     theater = json['theater'] != null
-        ? TheaterModel.fromJson(json['theater'])
+        ? Theater.fromJson(json['theater'])
         : null;
     showtime = json['showtime'] != null
-        ? ShowtimeModel.fromJson(json['showtime'])
+        ? Showtime.fromJson(json['showtime'])
         : null;
   }
 

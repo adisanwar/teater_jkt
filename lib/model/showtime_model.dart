@@ -1,11 +1,11 @@
-class ShowtimeModel {
+class Showtime {
   int? id;
   String? showDate;
   String? showTime;
 
-  ShowtimeModel({this.id, this.showDate, this.showTime});
+  Showtime({this.id, this.showDate, this.showTime});
 
-  ShowtimeModel.fromJson(Map<String, dynamic> json) {
+  Showtime.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     showDate = json['showDate'];
     showTime = json['showTime'];

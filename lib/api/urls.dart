@@ -1,10 +1,10 @@
 class Url {
   // static const baseUrl = 'living-newly-seal.ngrok-free.app/api';
-  static const baseUrl = 'http://10.107.253.100:3000/api';
-  static const baseImgUrl = 'http://10.107.253.100:3000/';
+  // static const baseUrl = 'http://10.107.253.100:3000/api';
+  // static const baseImgUrl = 'http://10.107.253.100:3000/';
 
-  // static const baseImgUrl = 'http://10.10.1.123:3000/';
-  // static const baseUrl = 'http://10.10.1.123:3000/api';
+  static const baseImgUrl = 'http://10.10.1.123:3000/';
+  static const baseUrl = 'http://10.10.1.123:3000/api';
 
   // static const baseImgUrl = 'http://172.130.10.209:3000/';
   // static const baseUrl = 'http://172.130.10.209:3000/api';
@@ -33,15 +33,15 @@ class Url {
   static const updateShows = '$baseUrl/shows';
   static const deleteShows = '$baseUrl/shows';
 
-  static const getTickets = '$baseUrl/shows/current';
-  static const createTickets = '$baseUrl/shows';
-  static const updateTickets = '$baseUrl/shows';
-  static const deleteTickets = '$baseUrl/shows';
+  static const getTickets = '$baseUrl/tickets';
+  static const createTickets = '$baseUrl/tickets';
+  static const updateTickets = '$baseUrl/tickets';
+  static const deleteTickets = '$baseUrl/tickets';
 
-  static const getOrders = '$baseUrl/shows/current';
-  static const createOrders = '$baseUrl/shows';
-  static const updateOrders = '$baseUrl/shows';
-  static const deleteOrders = '$baseUrl/shows';
+  static const getOrders = '$baseUrl/orders';
+  static const createOrders = '$baseUrl/orders';
+  static const updateOrders = '$baseUrl/orders';
+  static const deleteOrders = '$baseUrl/orders';
 
 }
 

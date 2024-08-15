@@ -8,7 +8,7 @@ class UserRepo extends GetConnect {
   final storage = GetStorage();
   final TokenService tokenService = TokenService();
 
-  Future<UserModel?> loginWithUsername({
+  Future<User?> loginWithUsername({
     required String username,
     required String password,
   }) async {
@@ -21,7 +21,7 @@ class UserRepo extends GetConnect {
       final response = await GetConnect().post(Url.login, data);
 
       if (response.statusCode == 200) {
-        final loginModel = UserModel.fromJson(response.body['data']);
+        final loginModel = User.fromJson(response.body['data']);
         final token = loginModel.token;
         if (token != null) {
           tokenService.saveToken(token);

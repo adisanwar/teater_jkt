@@ -19,7 +19,7 @@ class UserService extends GetConnect {
     super.onInit();
   }
 
-   Future<UserModel?> getCurrentUser() async {
+   Future<User?> getCurrentUser() async {
     try {
       String? token = tokenService.getToken();
       print('Token ini bisa: $token');
@@ -34,7 +34,7 @@ class UserService extends GetConnect {
       print('Response body: ${response.body}');
       
       if (response.statusCode == 200) {
-        return UserModel.fromJson(response.body['data']);
+        return User.fromJson(response.body['data']);
       } else {
         print('Failed to fetch user data: ${response.statusCode} - ${response.statusText}');
         return null;
@@ -45,12 +45,12 @@ class UserService extends GetConnect {
     }
   }
 
-  Future<UserModel?> getUserById(int id) async {
+  Future<User?> getUserById(int id) async {
     try {
       final response = await get('${Url.baseUrl}/users/$id');
 
       if (response.statusCode == 200) {
-        return UserModel.fromJson(response.body['data']);
+        return User.fromJson(response.body['data']);
       } else {
         return null;
       }
@@ -60,7 +60,7 @@ class UserService extends GetConnect {
     }
   }
 
-  Future<bool> updateUser(int id, UserModel user) async {
+  Future<bool> updateUser(int id, User user) async {
     try {
       final response = await patch('${Url.baseUrl}/users/$id', user.toJson());
 

@@ -4,7 +4,9 @@ import 'package:teater_jkt/controller/ticket_controller.dart';
 import 'package:teater_jkt/controller/order_controller.dart';
 import 'package:teater_jkt/screens/Booking/PaymentDetailPage.dart';
 import 'package:teater_jkt/widget/form/PrimaryButton.dart';
-import 'package:teater_jkt/model/order_model.dart'; // Import the OrderModel
+import 'package:teater_jkt/model/order_model.dart';
+
+import '../../model/ticket_model.dart'; // Import the OrderModel
 
 class ShowDescriptionPage extends StatelessWidget {
   final String title;
@@ -125,63 +127,56 @@ class ShowDescriptionPage extends StatelessWidget {
               width: double.infinity,
               child: PrimaryButton(
                 labelbtn: 'Pesan Tiket',
-               onPressed: () async {
-  //               final tickets = (context
-  //               )
-  // final ticket = Data (
-  //   showId: showId,
-  //   contactId: contactId,
-  //   // Add other necessary fields if required
-  // );
+                onPressed: () async {
+                  // Capture data dynamically during the button press
+                  // final seatNumber = 'A12'; // Example seat number, can be dynamic
+                  // final photoUrl = 'https://example.com/photos/seat_a12.png';
 
-  // print(ticket);
+                  // Create a Ticket object with the captured data
+                  final ticket = Ticket(
+                    // seatNumber: seatNumber,
+                    // photo: photoUrl,
+                    contactId: contactId,
+                    showId: showId,
+                  );
 
-await ticketController.createTicket();
+                  // Use the controller to create the ticket
+                  final createdTicket = await ticketController.createTicket(
+                      ticket);
 
-   Get.to(
-        () => PaymentDetailsPage(
-          showTitle: title,
-          showDescription: description,
-          showImageUrl: imageUrl,
-          price: price,
-          rating: rating,
-          location: location,
-        ),
-        transition: Transition.rightToLeft,
-      );
+                  // Convert the price to an integer for the order
+                  final int? ticketPrice = int.tryParse(price);
 
-  // if (createdTicket != null) {
-  //   // Use the created ticket's ID
-  //   final order = Data(
-  //     amount: int.parse(price), // Convert price to int
-  //     status: 'pending',
-  //     ticketId: createdTicket.id, // Assign the created ticket's ID here
-  //     // Add other necessary fields if required
-  //   );
+                  if (createdTicket != null) {
+                    final order = Order(
+                      ticketId: createdTicket.id,
+                      amount: ticketPrice,
+                    );
 
-  //   final orderCreated = await orderController.createOrder(order);
+                    // Create the order and retrieve the order object
+                    final createdOrder = await orderController.createOrder(
+                        order);
 
-  //   if (orderCreated) {
-  //     Get.to(
-  //       () => PaymentDetailsPage(
-  //         showTitle: title,
-  //         showDescription: description,
-  //         showImageUrl: imageUrl,
-  //         price: price,
-  //         rating: rating,
-  //         location: location,
-  //       ),
-  //       transition: Transition.rightToLeft,
-  //     );
-  //   } else {
-  //     Get.snackbar('Error', 'Failed to create order');
-  //   }
-  // } else {
-  //   Get.snackbar('Error', 'Failed to create ticket');
-  // }
-}
 
-              ),
+                      Get.snackbar('Success', 'Ticket Created Successfully');
+
+                      // Navigate to the Payment Details Page with the paymentUrl
+                      Get.to(
+                            () =>
+                            PaymentDetailsPage(
+                              showTitle: title,
+                              showDescription: description,
+                              showImageUrl: imageUrl,
+                              price: price,
+                              rating: rating,
+                              location: location,
+                              paymentUrl: createdOrder?.paymentUrl ?? ''// Pass the paymentUrl here
+                            ),
+                        transition: Transition.rightToLeft,
+                      );
+
+                  }
+                }),
             ),
             const SizedBox(height: 20),
           ],

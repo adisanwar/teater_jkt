@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+
 class PaymentWebView extends StatefulWidget {
-  final String url;
-
-  const PaymentWebView({required this.url, super.key});
-
+  String url;
+  PaymentWebView({required this.url, Key? key}) : super(key: key);
   @override
-  _PaymentWebViewState createState() => _PaymentWebViewState();
+  State<PaymentWebView> createState() => _WebViewScreenState();
 }
-
-class _PaymentWebViewState extends State<PaymentWebView> {
-  late final WebViewController _controller;
-
+class _WebViewScreenState extends State<PaymentWebView> {
+  late WebViewController controller;
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(widget.url));
+    controller = WebViewController()
+      ..loadRequest(
+        Uri.parse('https://flutter.dev'),
+      );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Complete Payment'),
+        centerTitle: true,
+        title: const Text('TextConstants.appBarTitle'),
       ),
-      body: WebViewWidget(controller: _controller),
+      body: WebViewWidget(
+        controller: controller,
+      ),
     );
   }
 }

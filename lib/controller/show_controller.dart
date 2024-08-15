@@ -6,8 +6,8 @@ class ShowController extends GetxController {
   final ShowService showService = Get.put(ShowService());
 
   var isLoading = false.obs;
-  var shows = <Data>[].obs;
-  var show = Data().obs;
+  var shows = <Show>[].obs;
+  var show = Show().obs;
 
   @override
   void onInit() {
@@ -32,8 +32,6 @@ class ShowController extends GetxController {
     }
   }
 
-
-
   Future<void> getShowById(int id) async {
     isLoading(true);
     try {
@@ -51,7 +49,7 @@ class ShowController extends GetxController {
     }
   }
 
-  Future<void> createShow(Data show) async {
+  Future<void> createShow(Show show) async {
     isLoading(true);
     try {
       final success = await showService.createShow(show);
@@ -69,7 +67,7 @@ class ShowController extends GetxController {
     }
   }
 
-  Future<void> updateShow(int id, Data show) async {
+  Future<void> updateShow(int id, Show show) async {
     isLoading(true);
     try {
       final success = await showService.updateShow(id, show);

@@ -18,13 +18,13 @@ class ShowService extends GetConnect {
     super.onInit();
   }
 
-  Future<List<Data>?> getShows() async {
+  Future<List<Show>?> getShows() async {
     try {
       final response = await get(Url.getShows);
       if (response.statusCode == 200 && response.body != null) {
-        // Parse the JSON response and map it to the Data model
+        // Parse the JSON response and map it to the Show model
         return (response.body['data'] as List)
-            .map((show) => Data.fromJson(show))
+            .map((show) => Show.fromJson(show))
             .toList();
       } else {
         print('Failed to fetch shows: ${response.statusCode} - ${response.statusText}');
@@ -36,11 +36,11 @@ class ShowService extends GetConnect {
     }
   }
 
-  Future<Data?> getShowById(int id) async {
+  Future<Show?> getShowById(int id) async {
     try {
       final response = await get('${Url.baseUrl}/shows/$id');
       if (response.statusCode == 200 && response.body != null) {
-        return Data.fromJson(response.body['data']);
+        return Show.fromJson(response.body['data']);
       } else {
         print('Failed to fetch show: ${response.statusCode} - ${response.statusText}');
         return null;
@@ -51,7 +51,7 @@ class ShowService extends GetConnect {
     }
   }
 
-  Future<bool> createShow(Data show) async {
+  Future<bool> createShow(Show show) async {
     try {
       final response = await post(Url.createShows, show.toJson());
       return response.statusCode == 201;
@@ -61,7 +61,7 @@ class ShowService extends GetConnect {
     }
   }
 
-  Future<bool> updateShow(int id, Data show) async {
+  Future<bool> updateShow(int id, Show show) async {
     try {
       final response = await put('${Url.updateShows}/$id', show.toJson());
       return response.statusCode == 200;

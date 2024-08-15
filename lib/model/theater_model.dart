@@ -1,13 +1,13 @@
-class TheaterModel {
+class Theater {
   int? id;
   String? name;
   String? photo;
   String? location;
   String? capacity;
 
-  TheaterModel({this.id, this.name, this.photo, this.location, this.capacity});
+  Theater({this.id, this.name, this.photo, this.location, this.capacity});
 
-  TheaterModel.fromJson(Map<String, dynamic> json) {
+  Theater.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     photo = json['photo'];

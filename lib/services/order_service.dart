@@ -18,13 +18,13 @@ class OrderService extends GetConnect {
     super.onInit();
   }
 
-  Future<List<Data>?> getOrders() async {
+  Future<List<Order>?> getOrders() async {
     try {
       final response = await get(Url.getOrders);
       print('Response body: ${response.body}');
       if (response.statusCode == 200) {
         return (response.body['data'] as List)
-            .map((order) => Data.fromJson(order))
+            .map((order) => Order.fromJson(order))
             .toList();
       } else {
         print('Failed to fetch orders: ${response.statusCode} - ${response.statusText}');
@@ -36,11 +36,11 @@ class OrderService extends GetConnect {
     }
   }
 
-  Future<Data?> getOrderById(int id) async {
+  Future<Order?> getOrderById(int id) async {
     try {
       final response = await get('${Url.baseUrl}/orders/$id');
       if (response.statusCode == 200) {
-        return Data.fromJson(response.body['data']);
+        return Order.fromJson(response.body['data']);
       } else {
         print('Failed to fetch order: ${response.statusCode} - ${response.statusText}');
         return null;
@@ -51,17 +51,23 @@ class OrderService extends GetConnect {
     }
   }
 
-  Future<bool> createOrder(Data order) async {
+  Future<Order?> createOrder(Order order) async {
     try {
       final response = await post(Url.createOrders, order.toJson());
-      return response.statusCode == 201;
+      if (response.statusCode == 201) {
+        return Order.fromJson(response.body['data']);
+      } else {
+        print('Succes to create order: ${response.statusCode} - ${response.statusText} - ${response.bodyString}' );
+        return null; // Return null if order creation fails
+      }
     } catch (e) {
       print("Error creating order: $e");
-      return false;
+      return null; // Return null on error
     }
   }
 
-  Future<bool> updateOrder(int id, Data order) async {
+
+  Future<bool> updateOrder(int id, Order order) async {
     try {
       final response = await put('${Url.updateOrders}/$id', order.toJson());
       return response.statusCode == 200;
