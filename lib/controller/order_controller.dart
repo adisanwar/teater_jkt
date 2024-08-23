@@ -60,7 +60,15 @@ class OrderController extends GetxController {
     try {
       final createdOrder = await orderService.createOrder(order);
       if (createdOrder != null) {
-        fetchOrders(); // Refresh the orders list if needed
+        orders.add(createdOrder); // Tambahkan order yang baru ke list orders
+
+        // Akses orderId dan paymentUrl dari order yang baru dibuat
+        final String? orderId = createdOrder.orderId;
+        final String? paymentUrl = createdOrder.paymentUrl;
+
+        print('Order ID: $orderId');
+        print('Payment URL: $paymentUrl');
+
         return createdOrder; // Return the created order
       } else {
         Get.snackbar('Error', 'Failed to create order');
@@ -74,6 +82,8 @@ class OrderController extends GetxController {
       isLoading(false);
     }
   }
+
+
 
 
   // Future<void> createOrderAfterTicket(Ticket ticket) async {

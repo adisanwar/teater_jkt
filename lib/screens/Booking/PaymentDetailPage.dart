@@ -6,6 +6,7 @@ import 'package:teater_jkt/controller/show_controller.dart';
 import 'dart:convert';
 
 import 'package:teater_jkt/screens/Booking/PaymentWebview.dart';
+import 'package:teater_jkt/widget/form/PrimaryButton.dart';
 
 class PaymentDetailsPage extends StatelessWidget {
 
@@ -56,12 +57,18 @@ class PaymentDetailsPage extends StatelessWidget {
             _buildPaymentDetail('Location', location),
             const Spacer(),
             Center(
-              child: ElevatedButton(
-                onPressed: () async {
-                  await _proceedToPayment(context);
-                },
-                child: const Text('Proceed to Payment'),
-              ),
+              child:
+              SizedBox(
+                width: double.infinity,
+                child: PrimaryButton(onPressed: () {}, labelbtn: 'Process Pembayaran'),
+              )
+
+              // ElevatedButton(
+              //   onPressed: () async {
+              //     await _proceedToPayment(context);
+              //   },
+              //   child: const Text('Proceed to Payment'),
+              // ),
             ),
           ],
         ),

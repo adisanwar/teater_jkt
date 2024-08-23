@@ -54,10 +54,10 @@ class OrderService extends GetConnect {
   Future<Order?> createOrder(Order order) async {
     try {
       final response = await post(Url.createOrders, order.toJson());
-      if (response.statusCode == 201) {
-        return Order.fromJson(response.body['data']);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return Order.fromJson(response.body['data']); // Ambil data dari respons
       } else {
-        print('Succes to create order: ${response.statusCode} - ${response.statusText} - ${response.bodyString}' );
+        print('Failed to create order: ${response.statusCode} - ${response.statusText} - ${response.bodyString}' );
         return null; // Return null if order creation fails
       }
     } catch (e) {
@@ -65,6 +65,8 @@ class OrderService extends GetConnect {
       return null; // Return null on error
     }
   }
+
+
 
 
   Future<bool> updateOrder(int id, Order order) async {
