@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:teater_jkt/model/order_model.dart';
 import 'package:teater_jkt/services/order_service.dart';
+import '../model/contact_model.dart';
 import '../services/ticket-service.dart';
 
 import '../model/ticket_model.dart';
@@ -12,6 +13,7 @@ class OrderController extends GetxController {
   var isLoading = false.obs;
   var orders = <Order>[].obs;  // Change Data to Order
   var order = Order().obs;
+  var contact = Contact().obs;
 
   // get ticketService => null;  // Change Data to Order
 
@@ -66,8 +68,8 @@ class OrderController extends GetxController {
         final String? orderId = createdOrder.orderId;
         final String? paymentUrl = createdOrder.paymentUrl;
 
-        print('Order ID: $orderId');
-        print('Payment URL: $paymentUrl');
+        // print('Order ID: $orderId');
+        // print('Payment URL: $paymentUrl');
 
         return createdOrder; // Return the created order
       } else {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:teater_jkt/controller/contact_controller.dart';
 import 'package:teater_jkt/model/order_model.dart';
 import 'package:teater_jkt/screens/Order/OrderDetailPage.dart';
 import 'package:teater_jkt/controller/order_controller.dart';
+import 'package:teater_jkt/screens/Order/OrderList.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -13,6 +15,7 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   final OrderController orderController = Get.put(OrderController());
+  final ContactController contactController = Get.put(ContactController());
 
   @override
   void initState() {
@@ -27,17 +30,17 @@ class _OrderScreenState extends State<OrderScreen> {
         return const Center(child: CircularProgressIndicator());
       }
 
-      // Retrieve the current logged-in username
-      final String currentUsername = 'loggedInUser'; // Replace with actual username retrieval method
-      // final orderUsername = orderController.order?.ticket?.contact?.username;
-      // Group orders by status and filter by the current user's username
-      final ordersByStatus = _groupOrdersByStatus(orderController.orders, currentUsername);
+      var orders = orderController.orders; // Get the list of orders
+      final currentContactId = contactController.contact.value.id;
+
+      // Group orders by status and filter by the current user's contact ID
+      final ordersByStatus = _groupOrdersByStatus(orders, currentContactId!);
 
       return DefaultTabController(
         length: 4,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Tickets'),
+            title: const Text('Riwayat Order Tiket'),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(48.0),
               child: TabBar(
@@ -45,15 +48,9 @@ class _OrderScreenState extends State<OrderScreen> {
                 indicatorSize: TabBarIndicatorSize.tab,
                 tabs: [
                   Tab(text: '(${ordersByStatus['On Going']!.length}) On Going'),
-                  Tab(
-                      text:
-                          '(${ordersByStatus['Pending Payment']!.length}) Pending Payment'),
-                  Tab(
-                      text:
-                          '(${ordersByStatus['Sudah Dibayar']!.length}) Sudah Dibayar'),
-                  Tab(
-                      text:
-                          '(${ordersByStatus['Riwayat Pembelian']!.length}) Riwayat Pembelian'),
+                  Tab(text: '(${ordersByStatus['Pending Payment']!.length}) Pending Payment'),
+                  Tab(text: '(${ordersByStatus['Sudah Dibayar']!.length}) Sudah Dibayar'),
+                  Tab(text: '(${ordersByStatus['Riwayat Pembelian']!.length}) Riwayat Pembelian'),
                 ],
               ),
             ),
@@ -71,8 +68,7 @@ class _OrderScreenState extends State<OrderScreen> {
     });
   }
 
-  // Group orders by their status and filter by the current user's username
-  Map<String, List<Order>> _groupOrdersByStatus(List<Order> orders, String currentUsername) {
+  Map<String, List<Order>> _groupOrdersByStatus(List<Order> orders, int currentContactId) {
     final Map<String, List<Order>> groupedOrders = {
       'On Going': [],
       'Pending Payment': [],
@@ -81,12 +77,12 @@ class _OrderScreenState extends State<OrderScreen> {
     };
 
     for (var order in orders) {
-      final orderUsername = order.ticket?.contact?.username; // Assuming 'contact' has a 'username' field
+      final orderContactId = order.ticket?.contactId;
 
-      if (orderUsername == currentUsername) {
+      if (orderContactId == currentContactId) {
         if (order.status == 'On Going') {
           groupedOrders['On Going']!.add(order);
-        } else if (order.status == 'pending' || order.status == 'Pending') {
+        } else if (order.status?.toLowerCase() == 'pending') {
           groupedOrders['Pending Payment']!.add(order);
         } else if (order.status == 'Sudah Dibayar') {
           groupedOrders['Sudah Dibayar']!.add(order);
@@ -97,63 +93,5 @@ class _OrderScreenState extends State<OrderScreen> {
     }
 
     return groupedOrders;
-  }
-}
-
-class OrderList extends StatelessWidget {
-  final List<Order> orders;
-
-  const OrderList({required this.orders, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: orders.length,
-      itemBuilder: (context, index) {
-        final order = orders[index];
-        return InkWell(
-          onTap: () {
-            Get.to(() => OrderDetailPage(
-                  title: order.ticket?.show?.title ?? 'No Title',
-                  description:
-                      order.ticket?.show?.description ?? 'No Description',
-                  date: order.ticket?.purchaseDate ?? 'No Date',
-                  status: order.status ?? 'No Status',
-                ));
-          },
-          child: Card(
-            margin: const EdgeInsets.all(10),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    order.ticket?.show?.title ?? 'No Title',
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    order.ticket?.show?.description ?? 'No Description',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Date: ${order.ticket?.purchaseDate ?? 'No Date'}',
-                    style: const TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Status: ${order.status ?? 'No Status'}',
-                    style: const TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
 }

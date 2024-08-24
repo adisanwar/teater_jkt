@@ -60,9 +60,11 @@ class PaymentDetailsPage extends StatelessWidget {
               child:
               SizedBox(
                 width: double.infinity,
-                child: PrimaryButton(onPressed: () {}, labelbtn: 'Process Pembayaran'),
+                child: PrimaryButton(onPressed: () async {
+                  await _proceedToPayment(context);
+                }, labelbtn: 'Proses Pembayaran'),
               )
-
+      
               // ElevatedButton(
               //   onPressed: () async {
               //     await _proceedToPayment(context);

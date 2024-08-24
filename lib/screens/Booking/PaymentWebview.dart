@@ -7,28 +7,38 @@ class PaymentWebView extends StatefulWidget {
   const PaymentWebView({required this.paymentUrl, Key? key}) : super(key: key);
 
   @override
-  State<PaymentWebView> createState() => _WebViewScreenState();
+  State<PaymentWebView> createState() => _PaymentWebViewState();
 }
 
-class _WebViewScreenState extends State<PaymentWebView> {
-  late WebViewController controller;
+class _PaymentWebViewState extends State<PaymentWebView> {
+  late final WebViewController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    String urlToLoad = widget.paymentUrl;
-    print(urlToLoad);
-print('hallo bisa atuh : ${urlToLoad}');
-    // Ensure the URL has a scheme (http or https)
-    if (!urlToLoad.startsWith('http://') && !urlToLoad.startsWith('https://')) {
-      urlToLoad = 'https://$urlToLoad'; // Default to https if no scheme is provided
-    }
-    
-    controller = WebViewController()
-      ..loadRequest(
-        Uri.parse(urlToLoad), // Access the url using widget.url
-      );
+    // Inisialisasi controller dengan params platform-specific jika diperlukan
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {
+            debugPrint('Page started loading: $url');
+          },
+          onPageFinished: (String url) {
+            debugPrint('Page finished loading: $url');
+          },
+          onWebResourceError: (WebResourceError error) {
+            debugPrint('''
+Page resource error:
+  code: ${error.errorCode}
+  description: ${error.description}
+  errorType: ${error.errorType}
+          ''');
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(widget.paymentUrl));
   }
 
   @override
@@ -39,7 +49,7 @@ print('hallo bisa atuh : ${urlToLoad}');
         title: const Text('Halaman Pembayaran'),
       ),
       body: WebViewWidget(
-        controller: controller,
+        controller: _controller,
       ),
     );
   }
