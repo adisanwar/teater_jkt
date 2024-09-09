@@ -47,9 +47,9 @@ class _OrderScreenState extends State<OrderScreen> {
                 isScrollable: true,
                 indicatorSize: TabBarIndicatorSize.tab,
                 tabs: [
-                  Tab(text: '(${ordersByStatus['On Going']!.length}) On Going'),
                   Tab(text: '(${ordersByStatus['Pending Payment']!.length}) Pending Payment'),
                   Tab(text: '(${ordersByStatus['Sudah Dibayar']!.length}) Sudah Dibayar'),
+                  Tab(text: '(${ordersByStatus['Dibatalkan']!.length}) Dibatalkan'),
                   Tab(text: '(${ordersByStatus['Riwayat Pembelian']!.length}) Riwayat Pembelian'),
                 ],
               ),
@@ -57,9 +57,9 @@ class _OrderScreenState extends State<OrderScreen> {
           ),
           body: TabBarView(
             children: [
-              OrderList(orders: ordersByStatus['On Going']!),
               OrderList(orders: ordersByStatus['Pending Payment']!),
               OrderList(orders: ordersByStatus['Sudah Dibayar']!),
+              OrderList(orders: ordersByStatus['Dibatalkan']!),
               OrderList(orders: ordersByStatus['Riwayat Pembelian']!),
             ],
           ),
@@ -70,9 +70,9 @@ class _OrderScreenState extends State<OrderScreen> {
 
   Map<String, List<Order>> _groupOrdersByStatus(List<Order> orders, int currentContactId) {
     final Map<String, List<Order>> groupedOrders = {
-      'On Going': [],
       'Pending Payment': [],
       'Sudah Dibayar': [],
+      'Dibatalkan': [],
       'Riwayat Pembelian': [],
     };
 
@@ -80,12 +80,13 @@ class _OrderScreenState extends State<OrderScreen> {
       final orderContactId = order.ticket?.contactId;
 
       if (orderContactId == currentContactId) {
-        if (order.status == 'On Going') {
-          groupedOrders['On Going']!.add(order);
-        } else if (order.status?.toLowerCase() == 'pending') {
+        if (order.status?.toLowerCase() == 'pending') {
           groupedOrders['Pending Payment']!.add(order);
         } else if (order.status == 'Sudah Dibayar') {
           groupedOrders['Sudah Dibayar']!.add(order);
+        } else if
+    (order.status == 'canceled') {
+    groupedOrders['Dibatalkan']!.add(order);
         } else {
           groupedOrders['Riwayat Pembelian']!.add(order);
         }

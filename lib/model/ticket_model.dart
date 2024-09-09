@@ -6,6 +6,7 @@ class Ticket {
   String? seatNumber;
   String? photo;
   String? purchaseDate;
+  String? status;
   int? contactId;
   int? showId;
   Contact? contact;
@@ -16,6 +17,7 @@ class Ticket {
     this.seatNumber,
     this.photo,
     this.purchaseDate,
+    this.status,
     this.contactId,
     this.showId,
     this.contact,
@@ -27,6 +29,7 @@ class Ticket {
     seatNumber = json['seatNumber'];
     photo = json['photo'];
     purchaseDate = json['purchaseDate'];
+    status = json['status'];
     contactId = json['contactId'];
     showId = json['showId'];
     contact = json['contact'] != null ? Contact.fromJson(json['contact']) : null;
@@ -37,6 +40,7 @@ class Ticket {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['seatNumber'] = seatNumber;
+    data['status'] = status;
     data['photo'] = photo;
     data['purchaseDate'] = purchaseDate;
     data['contactId'] = contactId;

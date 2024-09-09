@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teater_jkt/controller/order_controller.dart';
+import 'package:teater_jkt/controller/ticket_controller.dart';
+import 'package:teater_jkt/controller/contact_controller.dart';
 import 'package:teater_jkt/screens/ticket/TicketDetail.dart';
 
 class TicketHistoryPage extends StatelessWidget {
-  final OrderController orderController = Get.put(OrderController());
-
+  final TicketController ticketController = Get.put(TicketController());
+  final ContactController contactController = Get.put(ContactController());
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,32 +15,32 @@ class TicketHistoryPage extends StatelessWidget {
         title: const Text('Ticket History'),
       ),
       body: Obx(() {
-        if (orderController.isLoading.value) {
+        if (ticketController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        // Assuming you have a way to get the logged-in user's username
-        final String currentUsername = 'loggedInUser'; // Replace this with the actual method to get the current username
+        // Assuming you have a way to get the logged-in user's id or username
+        final currentUserId = contactController.contact.value.id; // Replace this with the actual method to get the current user ID
 
-        // Filter orders to display only those with "Completed" status and matching the logged-in user's username
-        final completedOrders = orderController.orders.where((order) {
-          final isCompleted = order.status?.toLowerCase() == 'completed';
-          final isCurrentUser = order.ticket?.contact?.username == currentUsername;
+        // Filter tickets to display only those with "Completed" status and matching the logged-in user's id
+        final completedTickets = ticketController.tickets.where((ticket) {
+          final isCompleted = ticket.status?.toLowerCase() == 'win'; // Adjust the condition as needed
+          final isCurrentUser = ticket.contact?.id == currentUserId; // Ensure ticket belongs to the current user
           return isCompleted && isCurrentUser;
         }).toList();
 
-        if (completedOrders.isEmpty) {
+        if (completedTickets.isEmpty) {
           return const Center(child: Text('No completed ticket history available.'));
         }
 
         return ListView.builder(
-          itemCount: completedOrders.length,
+          itemCount: completedTickets.length,
           itemBuilder: (context, index) {
-            final order = completedOrders[index];
-            final ticketTitle = order.ticket?.show?.title ?? 'No Title';
-            final ticketDescription = order.ticket?.show?.description ?? 'No Description';
-            final ticketDate = order.ticket?.purchaseDate ?? 'No Date';
-            final ticketStatus = order.status ?? 'Unknown';
+            final ticket = completedTickets[index];
+            final ticketTitle = ticket.show?.title ?? 'No Title';
+            final ticketDescription = ticket.show?.description ?? 'No Description';
+            final ticketDate = ticket.purchaseDate ?? 'No Date';
+            final ticketStatus = ticket.status ?? 'Unknown';
 
             return InkWell(
               onTap: () {

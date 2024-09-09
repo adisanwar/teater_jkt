@@ -21,7 +21,8 @@ class TicketService extends GetConnect {
   Future<List<Ticket>?> getTickets() async {
     try {
       final response = await get(Url.getTickets);
-      print('Response body: ${response.body}');
+      print('Response body: ${response.body}'); // Add this to debug
+
       if (response.statusCode == 200) {
         return (response.body['data'] as List)
             .map((ticket) => Ticket.fromJson(ticket))
@@ -35,6 +36,7 @@ class TicketService extends GetConnect {
       return null;
     }
   }
+
 
   Future<Ticket?> getTicketById(int id) async {
     try {
