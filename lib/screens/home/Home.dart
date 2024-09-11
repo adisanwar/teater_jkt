@@ -299,7 +299,7 @@ class ShowItem extends StatelessWidget {
             print('$title button clicked');
             Get.to(
                     () => PaymentWebView(
-                 paymentUrl: 'https://app.sandbox.midtrans.com/snap/v4/redirection/6f83a3d0-a4f9-43f9-931a-d7b36c61ee1a',
+                 paymentUrl: 'https://app.sandbox.midtrans.com/snap/v4/redirection/9fe11751-ba80-4482-904c-26c5b43ef44c', orderId: 'abd705a1-a70f-440e-9183-e6a55ee420c1',
             ));
           },
           child: const Text('Detail'),

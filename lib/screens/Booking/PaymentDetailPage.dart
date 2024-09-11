@@ -17,6 +17,7 @@ class PaymentDetailsPage extends StatelessWidget {
   final String rating;
   final String location;
   final String paymentUrl;
+  final String orderId;
 
    PaymentDetailsPage({
     required this.showTitle,
@@ -26,6 +27,7 @@ class PaymentDetailsPage extends StatelessWidget {
     required this.rating,
     required this.location,
      required this.paymentUrl,
+     required this.orderId,
     Key? key,
   }) : super(key: key);
 
@@ -89,6 +91,6 @@ class PaymentDetailsPage extends StatelessWidget {
     // Logic for handling payment can be added here
     // Example: Navigate to a webview with the payment URL
     // String paymentUrl = 'https://example.com/payment'; // Replace with actual payment URL
-    Get.to(() => PaymentWebView( paymentUrl: paymentUrl));
+    Get.to(() => PaymentWebView( paymentUrl: paymentUrl, orderId : orderId));
   }
 }

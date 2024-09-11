@@ -3,8 +3,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentWebView extends StatefulWidget {
   final String paymentUrl;
+  final String orderId;
 
-  const PaymentWebView({required this.paymentUrl, Key? key}) : super(key: key);
+  const PaymentWebView({required this.paymentUrl, required this.orderId, Key? key}) : super(key: key);
 
   @override
   State<PaymentWebView> createState() => _PaymentWebViewState();

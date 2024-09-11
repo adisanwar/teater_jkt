@@ -49,15 +49,15 @@ class OrderDetailPage extends StatelessWidget {
               'Status: $status',
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
-            const Spacer(),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle order confirmation or other actions
-                },
-                child: const Text('Confirm Order'),
-              ),
-            ),
+            // const Spacer(),
+            // Center(
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       // Handle order confirmation or other actions
+            //     },
+            //     child: const Text('Confirm Order'),
+            //   ),
+            // ),
           ],
         ),
       ),

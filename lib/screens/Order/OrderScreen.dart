@@ -40,7 +40,7 @@ class _OrderScreenState extends State<OrderScreen> {
         length: 4,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Riwayat Order Tiket'),
+            title: const Text('History Order'),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(48.0),
               child: TabBar(

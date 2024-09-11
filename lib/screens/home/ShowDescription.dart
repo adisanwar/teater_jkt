@@ -154,7 +154,7 @@ class ShowDescriptionPage extends StatelessWidget {
                     // Cek apakah order berhasil dibuat
                     if (createdOrder != null) {
                       final paymentUrl = createdOrder.paymentUrl;
-                      final orderId = createdOrder.id;
+                      final orderId = createdOrder.orderId;
 
                       // Menampilkan informasi pada konsol untuk debug
                       print('Payment URL: $paymentUrl');
@@ -170,6 +170,7 @@ class ShowDescriptionPage extends StatelessWidget {
                           rating: rating,
                           location: location,
                           paymentUrl: paymentUrl ?? '',
+                              orderId : orderId ?? '',
                         ),
                         transition: Transition.rightToLeft,
                       );
