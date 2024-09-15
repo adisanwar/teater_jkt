@@ -23,6 +23,8 @@ class OrderList extends StatelessWidget {
               description: order.ticket?.show?.description ?? 'No Description',
               date: order.ticket?.purchaseDate ?? 'No Date',
               status: order.status ?? 'No Status',
+              paymentUrl : order.paymentUrl ?? 'No Url',
+              orderId : order.orderId ?? 'No Order Id'
             ));
           },
           child: Card(
@@ -49,7 +51,7 @@ class OrderList extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     'Status: ${order.status ?? 'No Status'}',
-                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                    style: const TextStyle(fontSize: 14, color: Colors.green),
                   ),
                 ],
               ),

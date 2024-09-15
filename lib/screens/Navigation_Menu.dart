@@ -14,40 +14,55 @@ class NavigationMenu extends StatefulWidget {
 
 class _NavigationMenuState extends State<NavigationMenu> {
   final controller = Get.put(NavigationController());
+  final PageController _pageController =
+      PageController(); // Create a PageController
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: Obx(
-        () => NavigationBar (
+        () => NavigationBar(
           height: 80,
           elevation: 0,
           selectedIndex: controller.selectedIndex.value,
-          onDestinationSelected: (index) => controller.selectedIndex.value=index,
+          onDestinationSelected: (index) {
+            controller.selectedIndex.value = index;
+            _pageController.jumpToPage(index); // Navigate to the selected page
+          },
           destinations: const [
             NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-            NavigationDestination(icon: Icon(Icons.store_mall_directory), label: 'Order'),
-            NavigationDestination(icon: Icon(Icons.local_mall), label: 'Ticket'),
+            NavigationDestination(
+                icon: Icon(Icons.store_mall_directory), label: 'Order'),
+            NavigationDestination(
+                icon: Icon(Icons.local_mall), label: 'Ticket'),
             NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
           ],
-          ),
-      ),
-        body: Obx(
-          () => controller.screens[controller.selectedIndex.value],
         ),
+      ),
+      body: PageView(
+        controller: _pageController, // Assign the PageController
+        onPageChanged: (index) {
+          controller.selectedIndex.value = index; // Update the selected index
+        },
+        children: controller.screens,
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose(); // Dispose the PageController
+    super.dispose();
   }
 }
 
 class NavigationController extends GetxController {
-  final Rx<int>  selectedIndex = 0.obs;
-  
+  final Rx<int> selectedIndex = 0.obs;
+
   final screens = [
-    HomeScreen(), 
+    HomeScreen(),
     const OrderScreen(),
     TicketHistoryPage(),
     const ProfilePage()
-    
   ];
-  
 }

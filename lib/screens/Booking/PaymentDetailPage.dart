@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:teater_jkt/controller/order_controller.dart';
-import 'package:teater_jkt/controller/show_controller.dart';
-import 'dart:convert';
-
 import 'package:teater_jkt/screens/Booking/PaymentWebview.dart';
 import 'package:teater_jkt/widget/form/PrimaryButton.dart';
 
 class PaymentDetailsPage extends StatelessWidget {
-
   final String showTitle;
   final String showDescription;
   final String showImageUrl;
@@ -19,15 +13,15 @@ class PaymentDetailsPage extends StatelessWidget {
   final String paymentUrl;
   final String orderId;
 
-   PaymentDetailsPage({
+  PaymentDetailsPage({
     required this.showTitle,
     required this.showDescription,
     required this.showImageUrl,
     required this.price,
     required this.rating,
     required this.location,
-     required this.paymentUrl,
-     required this.orderId,
+    required this.paymentUrl,
+    required this.orderId,
     Key? key,
   }) : super(key: key);
 
@@ -37,45 +31,48 @@ class PaymentDetailsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Payment Details'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(showImageUrl),
-            const SizedBox(height: 20),
-            Text(
-              showTitle,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.network(showImageUrl),
+                const SizedBox(height: 20),
+                Text(
+                  showTitle,
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  showDescription,
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 20),
+                _buildPaymentDetail('Ticket Price', price),
+                _buildPaymentDetail('Rating', rating),
+                _buildPaymentDetail('Location', location),
+                const SizedBox(height: 80), // Add some space to make sure all content is visible
+              ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              showDescription,
-              style: const TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 20),
-            _buildPaymentDetail('Ticket Price', price),
-            _buildPaymentDetail('Rating', rating),
-            _buildPaymentDetail('Location', location),
-            const Spacer(),
-            Center(
-              child:
-              SizedBox(
-                width: double.infinity,
-                child: PrimaryButton(onPressed: () async {
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              color: Colors.white, // Background color to ensure visibility
+              padding: const EdgeInsets.all(16.0),
+              child: PrimaryButton(
+                onPressed: () async {
                   await _proceedToPayment(context);
-                }, labelbtn: 'Proses Pembayaran'),
-              )
-      
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     await _proceedToPayment(context);
-              //   },
-              //   child: const Text('Proceed to Payment'),
-              // ),
+                },
+                labelbtn: 'Proses Pembayaran',
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -88,9 +85,6 @@ class PaymentDetailsPage extends StatelessWidget {
   }
 
   Future<void> _proceedToPayment(BuildContext context) async {
-    // Logic for handling payment can be added here
-    // Example: Navigate to a webview with the payment URL
-    // String paymentUrl = 'https://example.com/payment'; // Replace with actual payment URL
-    Get.to(() => PaymentWebView( paymentUrl: paymentUrl, orderId : orderId));
+    Get.to(() => PaymentWebView(paymentUrl: paymentUrl, orderId: orderId));
   }
 }

@@ -124,64 +124,64 @@ class ShowDescriptionPage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: double.infinity,
-              child: PrimaryButton(
-                labelbtn: 'Pesan Tiket',
-                onPressed: () async {
-                  // Membuat tiket terlebih dahulu
-                  final ticket = Ticket(
-                    contactId: contactId,
-                    showId: showId,
-                  );
-
-                  // Gunakan controller untuk membuat tiket
-                  final createdTicket = await ticketController.createTicket(ticket);
-
-                  // Convert harga menjadi integer untuk order
-                  final int? ticketPrice = int.tryParse(price);
-
-                  if (createdTicket != null) {
-                    final order = Order(
-                      ticketId: createdTicket.id,
-                      amount: ticketPrice,
+                width: double.infinity,
+                child: PrimaryButton(
+                  labelbtn: 'Pesan Tiket',
+                  onPressed: () async {
+                    // Membuat tiket terlebih dahulu
+                    final ticket = Ticket(
+                      contactId: contactId,
+                      showId: showId,
                     );
 
-                    // Membuat order dan mendapatkan objek order
-                    final createdOrder = await orderController.createOrder(order);
+                    // Gunakan controller untuk membuat tiket
+                    final createdTicket = await ticketController.createTicket(ticket);
 
-                    print(createdOrder.toString());
-                    print(createdTicket.toString());
-                    // Cek apakah order berhasil dibuat
-                    if (createdOrder != null) {
-                      final paymentUrl = createdOrder.paymentUrl;
-                      final orderId = createdOrder.orderId;
+                    // Convert harga menjadi integer untuk order
+                    final int? ticketPrice = int.tryParse(price);
 
-                      // Menampilkan informasi pada konsol untuk debug
-                      print('Payment URL: $paymentUrl');
-                      print('Order ID: $orderId');
-
-                      // Navigasi ke halaman PaymentDetailsPage
-                      Get.to(
-                            () => PaymentDetailsPage(
-                          showTitle: title,
-                          showDescription: description,
-                          showImageUrl: imageUrl,
-                          price: price,
-                          rating: rating,
-                          location: location,
-                          paymentUrl: paymentUrl ?? '',
-                              orderId : orderId ?? '',
-                        ),
-                        transition: Transition.rightToLeft,
+                    if (createdTicket != null) {
+                      final order = Order(
+                        ticketId: createdTicket.id,
+                        amount: ticketPrice,
                       );
+
+                      // Membuat order dan mendapatkan objek order
+                      final createdOrder = await orderController.createOrder(order);
+
+                      print(createdOrder.toString());
+                      print(createdTicket.toString());
+                      // Cek apakah order berhasil dibuat
+                      if (createdOrder != null) {
+                        final paymentUrl = createdOrder.paymentUrl;
+                        final orderId = createdOrder.orderId;
+
+                        // Menampilkan informasi pada konsol untuk debug
+                        print('Payment URL: $paymentUrl');
+                        print('Order ID: $orderId');
+
+                        // Navigasi ke halaman PaymentDetailsPage
+                        Get.to(
+                              () => PaymentDetailsPage(
+                            showTitle: title,
+                            showDescription: description,
+                            showImageUrl: imageUrl,
+                            price: price,
+                            rating: rating,
+                            location: location,
+                            paymentUrl: paymentUrl ?? '',
+                            orderId : orderId ?? '',
+                          ),
+                          transition: Transition.rightToLeft,
+                        );
+                      } else {
+                        print('error');
+                      }
                     } else {
                       print('error');
                     }
-                  } else {
-                    print('error');
-                  }
-                },
-              )
+                  },
+                )
 
             ),
             const SizedBox(height: 20),

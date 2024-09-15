@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:teater_jkt/widget/form/PrimaryButton.dart';
+
+import '../Booking/PaymentWebview.dart';
 
 class OrderDetailPage extends StatelessWidget {
   final String title;
   final String description;
   final String date;
   final String status;
+  final String paymentUrl;
+  final String orderId;
 
   const OrderDetailPage({
     required this.title,
     required this.description,
     required this.date,
     required this.status,
-    super.key, 
+    required this.paymentUrl,
+    required this.orderId,
+    super.key,
   });
 
   @override
@@ -41,23 +49,21 @@ class OrderDetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'Date: $date',
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-            const SizedBox(height: 20),
-            Text(
               'Status: $status',
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
-            // const Spacer(),
-            // Center(
-            //   child: ElevatedButton(
-            //     onPressed: () {
-            //       // Handle order confirmation or other actions
-            //     },
-            //     child: const Text('Confirm Order'),
-            //   ),
-            // ),
+            const Spacer(),
+            // Show the Confirm Order button only if the status is "pending"
+            if (status.toLowerCase() == 'pending')
+              Center(
+                child: SizedBox (
+                  width: double.infinity,
+                  child: PrimaryButton(onPressed: () {
+                    Get.to(() => PaymentWebView( paymentUrl: paymentUrl, orderId : orderId));
+                  },
+                      labelbtn: 'Confirm Order'),
+                )
+              ),
           ],
         ),
       ),

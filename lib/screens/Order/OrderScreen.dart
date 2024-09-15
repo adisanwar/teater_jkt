@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:teater_jkt/controller/contact_controller.dart';
-import 'package:teater_jkt/model/order_model.dart';
-import 'package:teater_jkt/screens/Order/OrderDetailPage.dart';
-import 'package:teater_jkt/controller/order_controller.dart';
 import 'package:teater_jkt/screens/Order/OrderList.dart';
+import 'package:teater_jkt/controller/order_controller.dart';
+import 'package:teater_jkt/model/order_model.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -82,12 +81,17 @@ class _OrderScreenState extends State<OrderScreen> {
       if (orderContactId == currentContactId) {
         if (order.status?.toLowerCase() == 'pending') {
           groupedOrders['Pending Payment']!.add(order);
-        } else if (order.status == 'Sudah Dibayar') {
+        } else if (order.status?.toLowerCase() == 'paid') {
           groupedOrders['Sudah Dibayar']!.add(order);
-        } else if
-    (order.status == 'canceled') {
-    groupedOrders['Dibatalkan']!.add(order);
-        } else {
+        } else if (order.status?.toLowerCase() == 'canceled') {
+          groupedOrders['Dibatalkan']!.add(order);
+        }
+
+        // Consider other statuses for 'Riwayat Pembelian'
+        if (order.status?.toLowerCase() == 'paid' ||
+            order.status?.toLowerCase() == 'completed' ||
+            order.status?.toLowerCase() == 'canceled'
+        ) { // assuming 'completed' is a valid status indicating a past purchase
           groupedOrders['Riwayat Pembelian']!.add(order);
         }
       }

@@ -23,7 +23,7 @@ class TicketController extends GetxController {
       if (result != null) {
         tickets.assignAll(result);
       } else {
-        Get.snackbar('Error', 'Failed to fetch tickets');
+        // Get.snackbar('Error', 'Failed to fetch tickets');
       }
     } catch (e) {
       print("Error fetching tickets: $e");
