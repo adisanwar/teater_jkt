@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:teater_jkt/screens/home/Home.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentWebView extends StatefulWidget {
@@ -48,6 +51,13 @@ Page resource error:
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Halaman Pembayaran'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigate back to the home screen or previous screen
+            Get.offAll(() => HomeScreen()); // Replace HomeScreen with your home screen widget
+          },
+        ),
       ),
       body: WebViewWidget(
         controller: _controller,
