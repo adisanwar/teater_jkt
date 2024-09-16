@@ -4,8 +4,6 @@ import 'package:teater_jkt/services/order_service.dart';
 import '../model/contact_model.dart';
 import '../services/ticket-service.dart';
 
-import '../model/ticket_model.dart';
-
 class OrderController extends GetxController {
   final OrderService orderService = Get.put(OrderService());
   final TicketService ticketService = Get.put(TicketService());

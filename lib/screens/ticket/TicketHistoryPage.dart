@@ -5,6 +5,8 @@ import 'package:teater_jkt/controller/ticket_controller.dart';
 import 'TicketDetail.dart';
 
 class TicketHistoryPage extends StatefulWidget {
+  const TicketHistoryPage({super.key});
+
   @override
   State<TicketHistoryPage> createState() => _TicketHistoryPageState();
 }
@@ -87,7 +89,7 @@ class _TicketHistoryPageState extends State<TicketHistoryPage> {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          'Status: Completed',
+                          'Status: $status',
                           style: const TextStyle(fontSize: 16),
                         ),
                         const SizedBox(height: 10),

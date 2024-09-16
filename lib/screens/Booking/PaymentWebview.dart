@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:teater_jkt/controller/navigation_controller.dart';
-import 'package:teater_jkt/screens/home/Home.dart';
+import 'package:teater_jkt/screens/Navigation_Menu.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentWebView extends StatefulWidget {
