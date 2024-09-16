@@ -4,6 +4,7 @@ import 'package:teater_jkt/screens/home/Home.dart';
 import 'package:teater_jkt/screens/home/Profile.dart';
 import 'package:teater_jkt/screens/Order/OrderScreen.dart';
 import 'package:teater_jkt/screens/ticket/TicketHistoryPage.dart';
+import 'package:teater_jkt/controller/navigation_controller.dart';
 
 class NavigationMenu extends StatefulWidget {
   const NavigationMenu({super.key});

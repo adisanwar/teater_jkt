@@ -4,9 +4,21 @@ import 'package:teater_jkt/controller/contact_controller.dart';
 import 'package:teater_jkt/controller/ticket_controller.dart';
 import 'TicketDetail.dart';
 
-class TicketHistoryPage extends StatelessWidget {
+class TicketHistoryPage extends StatefulWidget {
+  @override
+  State<TicketHistoryPage> createState() => _TicketHistoryPageState();
+}
+
+class _TicketHistoryPageState extends State<TicketHistoryPage> {
   final TicketController ticketController = Get.put(TicketController());
+
   final ContactController contactController = Get.put(ContactController());
+
+  @override
+  void initState() {
+    super.initState();
+    ticketController.fetchTickets(); // Fetch orders when the screen initializes
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +50,13 @@ class TicketHistoryPage extends StatelessWidget {
             await ticketController.fetchTickets();
           },
           child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(), // Ensure the list is always scrollable
             itemCount: filteredTickets.length,
             itemBuilder: (context, index) {
               final ticket = filteredTickets[index];
               final seatNumber = ticket.seatNumber ?? 'No Seat';
               final purchaseDate = ticket.purchaseDate ?? 'No Date';
               final status = ticket.status ?? 'Unknown';
-              // final contactName = ticket.contact?.fullname ?? 'No Contact';
               final showTitle = ticket.show?.title ?? 'No Show Title';
 
               return InkWell(
@@ -53,7 +65,6 @@ class TicketHistoryPage extends StatelessWidget {
                   Get.to(() => TicketDetailPage(
                     title: showTitle,
                     description: 'Seat: $seatNumber'
-                        // '\nContact: $contactName'
                         '\nStatus: $status',
                     date: purchaseDate,
                   ));
@@ -79,11 +90,6 @@ class TicketHistoryPage extends StatelessWidget {
                           'Status: Completed',
                           style: const TextStyle(fontSize: 16),
                         ),
-                        const SizedBox(height: 10),
-                        // Text(
-                        //   'Contact: $contactName',
-                        //   style: const TextStyle(fontSize: 16),
-                        // ),
                         const SizedBox(height: 10),
                         Text(
                           'Show: $showTitle',

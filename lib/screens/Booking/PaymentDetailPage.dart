@@ -38,25 +38,81 @@ class PaymentDetailsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.network(showImageUrl),
-                const SizedBox(height: 20),
-                Text(
-                  showTitle,
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                // Header Section
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.blueGrey.shade50,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(showImageUrl),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              showTitle,
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blueGrey,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              showDescription,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  showDescription,
-                  style: const TextStyle(fontSize: 16),
-                ),
                 const SizedBox(height: 20),
-                _buildPaymentDetail('Ticket Price', price),
-                _buildPaymentDetail('Rating', rating),
-                _buildPaymentDetail('Location', location),
-                const SizedBox(height: 80), // Add some space to make sure all content is visible
+                // Payment Details Section
+                Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        _buildPaymentDetail(
+                          Icons.attach_money,
+                          'Ticket Price',
+                          price,
+                        ),
+                        const Divider(),
+                        _buildPaymentDetail(
+                          Icons.star,
+                          'Rating',
+                          rating,
+                        ),
+                        const Divider(),
+                        _buildPaymentDetail(
+                          Icons.location_on,
+                          'Location',
+                          location,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 80),
               ],
             ),
           ),
+          // Bottom Button Section
           Positioned(
             left: 0,
             right: 0,
@@ -77,10 +133,17 @@ class PaymentDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentDetail(String title, String value) {
+  Widget _buildPaymentDetail(IconData icon, String title, String value) {
     return ListTile(
-      title: Text(title),
-      subtitle: Text(value),
+      leading: Icon(icon, color: Colors.blueGrey),
+      title: Text(
+        title,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(
+        value,
+        style: const TextStyle(color: Colors.black87),
+      ),
     );
   }
 

@@ -15,6 +15,7 @@ class HomeScreen extends StatelessWidget {
 
   HomeScreen({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,16 +70,16 @@ class HomeScreen extends StatelessWidget {
                 ),
                 items: showController.shows.map((show) {
                   return CarouselItem(
-                    showId: show.id!,
+                    showId: show.id ?? 0, // Provide a default value
                     imageUrl: show.photo ?? 'https://via.placeholder.com/600x400',
                     title: show.title ?? 'No Title',
                     description: show.description ?? 'No Description',
                     rating: show.rating ?? 'No Rating',
-                      price: show.price.toString() ?? 'No Price',
-                    location : show.theater?.location ?? 'No Location'
-
+                    price: show.price?.toString() ?? 'No Price',
+                    location: show.theater?.location ?? 'No Location',
                   );
                 }).toList(),
+
               );
             }),
             const SizedBox(height: 40),
@@ -135,17 +136,22 @@ class CarouselItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Get.to(() => ShowDescriptionPage(
-          contactId: contact.id!,
-          showId: showId,
-          title: title,
-          description: description,
-          imageUrl: getFullImageUrl(imageUrl),
-          price: price,
-          rating: rating,
-          location: location,
-        ));
+        if (contact?.id != null) {
+          Get.to(() => ShowDescriptionPage(
+            contactId: contact.id!,
+            showId: showId,
+            title: title,
+            description: description,
+            imageUrl: getFullImageUrl(imageUrl),
+            price: price,
+            rating: rating,
+            location: location,
+          ));
+        } else {
+          // Handle the null case
+        }
       },
+
       child: Container(
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -185,13 +191,14 @@ class WelcomeSection extends StatelessWidget {
             ),
           ),
           Text(
-            user.fullname ?? 'No Name',
+            user?.fullname ?? 'No Name',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
+
         ],
       );
     });

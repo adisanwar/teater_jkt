@@ -6,9 +6,9 @@ import 'package:teater_jkt/screens/Booking/PaymentDetailPage.dart';
 import 'package:teater_jkt/widget/form/PrimaryButton.dart';
 import 'package:teater_jkt/model/order_model.dart';
 
-import '../../model/ticket_model.dart'; // Import the OrderModel
+import '../../model/ticket_model.dart';
 
-class ShowDescriptionPage extends StatelessWidget {
+class ShowDescriptionPage extends StatefulWidget {
   final String title;
   final String description;
   final String imageUrl;
@@ -17,9 +17,6 @@ class ShowDescriptionPage extends StatelessWidget {
   final String location;
   final int showId;
   final int contactId;
-
-  final TicketController ticketController = Get.put(TicketController());
-  final OrderController orderController = Get.put(OrderController());
 
   ShowDescriptionPage({
     required this.title,
@@ -33,9 +30,19 @@ class ShowDescriptionPage extends StatelessWidget {
   });
 
   @override
+  _ShowDescriptionPageState createState() => _ShowDescriptionPageState();
+}
+
+class _ShowDescriptionPageState extends State<ShowDescriptionPage> {
+  final TicketController ticketController = Get.put(TicketController());
+  final OrderController orderController = Get.put(OrderController());
+
+  bool _acceptTerms = false; // Manage checkbox state
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: Text(widget.title)),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -45,7 +52,16 @@ class ShowDescriptionPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network(imageUrl),
+                    // Enhanced Image Presentation
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: Image.network(
+                        widget.imageUrl,
+                        width: double.infinity,
+                        height: 300,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -53,69 +69,41 @@ class ShowDescriptionPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            title,
+                            widget.title,
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 28,
                               fontWeight: FontWeight.bold,
+                              color: Colors.black87,
                             ),
                           ),
                           const SizedBox(height: 8),
+                          // Replace with Star Rating
                           Row(
                             children: [
-                              const Icon(Icons.star, color: Colors.amber),
-                              const SizedBox(width: 4),
+                              Icon(Icons.star, color: Colors.amber),
+                              SizedBox(width: 4),
                               Text(
-                                rating,
-                                style: const TextStyle(
+                                widget.rating,
+                                style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
+                                  color: Colors.black54,
                                 ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            description,
-                            style: const TextStyle(fontSize: 16),
+                            widget.description,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
                           ),
                           const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Location:',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                location,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Ticket Price:',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                price,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green,
-                                ),
-                              ),
-                            ],
-                          ),
+                          _buildInfoRow('Location:', widget.location),
+                          _buildInfoRow('Ticket Price:', widget.price,
+                              isPrice: true),
                         ],
                       ),
                     ),
@@ -123,71 +111,128 @@ class ShowDescriptionPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-                width: double.infinity,
-                child: PrimaryButton(
-                  labelbtn: 'Pesan Tiket',
-                  onPressed: () async {
-                    // Membuat tiket terlebih dahulu
-                    final ticket = Ticket(
-                      contactId: contactId,
-                      showId: showId,
-                    );
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _acceptTerms,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _acceptTerms = value ?? false;
+                        });
+                      },
+                    ),
+                    const Expanded(
+                      child: Text(
+                        'I accept the Terms and Conditions',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                    width: double.infinity,
+                    child: PrimaryButton(
+                      labelbtn: 'Pesan Tiket',
+                      onPressed: () async {
+                        if (_acceptTerms) {
+                          // Membuat tiket terlebih dahulu
+                          final ticket = Ticket(
+                            contactId: widget.contactId,
+                            showId: widget.showId,
+                          );
 
-                    // Gunakan controller untuk membuat tiket
-                    final createdTicket = await ticketController.createTicket(ticket);
+                          // Gunakan controller untuk membuat tiket
+                          final createdTicket =
+                          await ticketController.createTicket(ticket);
 
-                    // Convert harga menjadi integer untuk order
-                    final int? ticketPrice = int.tryParse(price);
+                          // Convert harga menjadi integer untuk order
+                          final int? ticketPrice = int.tryParse(widget.price);
 
-                    if (createdTicket != null) {
-                      final order = Order(
-                        ticketId: createdTicket.id,
-                        amount: ticketPrice,
-                      );
+                          if (createdTicket != null) {
+                            final order = Order(
+                              ticketId: createdTicket.id,
+                              amount: ticketPrice,
+                            );
 
-                      // Membuat order dan mendapatkan objek order
-                      final createdOrder = await orderController.createOrder(order);
+                            // Membuat order dan mendapatkan objek order
+                            final createdOrder =
+                            await orderController.createOrder(order);
 
-                      print(createdOrder.toString());
-                      print(createdTicket.toString());
-                      // Cek apakah order berhasil dibuat
-                      if (createdOrder != null) {
-                        final paymentUrl = createdOrder.paymentUrl;
-                        final orderId = createdOrder.orderId;
+                            print(createdOrder.toString());
+                            print(createdTicket.toString());
+                            // Cek apakah order berhasil dibuat
+                            if (createdOrder != null) {
+                              final paymentUrl = createdOrder.paymentUrl;
+                              final orderId = createdOrder.orderId;
 
-                        // Menampilkan informasi pada konsol untuk debug
-                        print('Payment URL: $paymentUrl');
-                        print('Order ID: $orderId');
+                              // Menampilkan informasi pada konsol untuk debug
+                              print('Payment URL: $paymentUrl');
+                              print('Order ID: $orderId');
 
-                        // Navigasi ke halaman PaymentDetailsPage
-                        Get.to(
-                              () => PaymentDetailsPage(
-                            showTitle: title,
-                            showDescription: description,
-                            showImageUrl: imageUrl,
-                            price: price,
-                            rating: rating,
-                            location: location,
-                            paymentUrl: paymentUrl ?? '',
-                            orderId : orderId ?? '',
-                          ),
-                          transition: Transition.rightToLeft,
-                        );
-                      } else {
-                        print('error');
-                      }
-                    } else {
-                      print('error');
-                    }
-                  },
-                )
-
+                              // Navigasi ke halaman PaymentDetailsPage
+                              Get.to(
+                                    () => PaymentDetailsPage(
+                                  showTitle: widget.title,
+                                  showDescription: widget.description,
+                                  showImageUrl: widget.imageUrl,
+                                  price: widget.price,
+                                  rating: widget.rating,
+                                  location: widget.location,
+                                  paymentUrl: paymentUrl ?? '',
+                                  orderId: orderId ?? '',
+                                ),
+                                transition: Transition.rightToLeft,
+                              );
+                            } else {
+                              print('error');
+                            }
+                          } else {
+                            print('error');
+                          }
+                        } else {
+                          // Tampilkan snackbar jika checkbox belum dicentang
+                          Get.snackbar(
+                            'Terms and Conditions',
+                            'Please accept the terms and conditions to proceed.',
+                            snackPosition: SnackPosition.TOP,
+                            backgroundColor: Colors.red[400],
+                            colorText: Colors.white,
+                          );
+                        }
+                      },
+                    )),
+              ],
             ),
             const SizedBox(height: 20),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value, {bool isPrice = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black54,
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: isPrice ? Colors.green : Colors.black87,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:teater_jkt/controller/navigation_controller.dart';
 import 'package:teater_jkt/screens/home/Home.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -55,7 +56,7 @@ Page resource error:
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             // Navigate back to the home screen or previous screen
-            Get.offAll(() => HomeScreen()); // Replace HomeScreen with your home screen widget
+            Get.offAll(() =>const NavigationMenu(), arguments: {'initialPage': 0});
           },
         ),
       ),
