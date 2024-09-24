@@ -26,7 +26,7 @@ class TicketController extends GetxController {
         // Get.snackbar('Error', 'Failed to fetch tickets');
       }
     } catch (e) {
-      print("Error fetching tickets: $e");
+      // print("Error fetching tickets: $e");
       Get.snackbar('Error', 'Failed to fetch tickets');
     } finally {
       isLoading(false);

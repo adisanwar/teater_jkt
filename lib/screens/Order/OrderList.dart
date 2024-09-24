@@ -39,11 +39,11 @@ class OrderList extends StatelessWidget {
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    order.ticket?.show?.description ?? 'No Description',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 10),
+                  // Text(
+                  //   order.ticket?.show?.description ?? 'No Description',
+                  //   style: const TextStyle(fontSize: 16),
+                  // ),
+                  // const SizedBox(height: 10),
                   Text(
                     'Date: ${order.ticket?.purchaseDate ?? 'No Date'}',
                     style: const TextStyle(fontSize: 14, color: Colors.grey),

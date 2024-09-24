@@ -75,6 +75,9 @@ class _ShowDescriptionPageState extends State<ShowDescriptionPage> {
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
                             ),
+                            softWrap: true, // Enable text wrapping
+                            overflow: TextOverflow
+                                .visible, // Allow overflow to wrap
                           ),
                           const SizedBox(height: 8),
                           // Replace with Star Rating
@@ -99,6 +102,9 @@ class _ShowDescriptionPageState extends State<ShowDescriptionPage> {
                               fontSize: 16,
                               color: Colors.black87,
                             ),
+                            softWrap: true,
+                            // Enable text wrapping for description
+                            overflow: TextOverflow.visible,
                           ),
                           const SizedBox(height: 16),
                           _buildInfoRow('Location:', widget.location),
@@ -127,6 +133,7 @@ class _ShowDescriptionPageState extends State<ShowDescriptionPage> {
                       child: Text(
                         'I accept the Terms and Conditions',
                         style: TextStyle(fontSize: 16),
+                        softWrap: true, // Enable wrapping for this text
                       ),
                     ),
                   ],
@@ -173,16 +180,17 @@ class _ShowDescriptionPageState extends State<ShowDescriptionPage> {
 
                               // Navigasi ke halaman PaymentDetailsPage
                               Get.to(
-                                    () => PaymentDetailsPage(
-                                  showTitle: widget.title,
-                                  showDescription: widget.description,
-                                  showImageUrl: widget.imageUrl,
-                                  price: widget.price,
-                                  rating: widget.rating,
-                                  location: widget.location,
-                                  paymentUrl: paymentUrl ?? '',
-                                  orderId: orderId ?? '',
-                                ),
+                                    () =>
+                                    PaymentDetailsPage(
+                                      showTitle: widget.title,
+                                      showDescription: widget.description,
+                                      showImageUrl: widget.imageUrl,
+                                      price: widget.price,
+                                      rating: widget.rating,
+                                      location: widget.location,
+                                      paymentUrl: paymentUrl ?? '',
+                                      orderId: orderId ?? '',
+                                    ),
                                 transition: Transition.rightToLeft,
                               );
                             } else {
@@ -213,26 +221,36 @@ class _ShowDescriptionPageState extends State<ShowDescriptionPage> {
   }
 
   Widget _buildInfoRow(String label, String value, {bool isPrice = false}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.black54,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // Align start of both rows
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black54,
+            ),
           ),
-        ),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: isPrice ? Colors.green : Colors.black87,
+          const SizedBox(width: 5), // Add some spacing between label and value
+          Flexible(
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: isPrice ? Colors.green : Colors.black87,
+              ),
+              softWrap: true, // Allow text to wrap
+              overflow: TextOverflow.visible, // Ensure the text wraps properly
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
+

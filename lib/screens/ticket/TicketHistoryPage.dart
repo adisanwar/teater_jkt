@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:teater_jkt/controller/contact_controller.dart';
 import 'package:teater_jkt/controller/ticket_controller.dart';
-import 'TicketDetail.dart';
+import 'TicketDetail.dart'; // Assuming you have this page for detailed view of the ticket.
 
 class TicketHistoryPage extends StatefulWidget {
   const TicketHistoryPage({super.key});
@@ -13,13 +13,13 @@ class TicketHistoryPage extends StatefulWidget {
 
 class _TicketHistoryPageState extends State<TicketHistoryPage> {
   final TicketController ticketController = Get.put(TicketController());
-
   final ContactController contactController = Get.put(ContactController());
 
   @override
   void initState() {
     super.initState();
-    ticketController.fetchTickets(); // Fetch orders when the screen initializes
+    ticketController.fetchTickets(); // Fetch tickets when the screen initializes
+    // contactController.fetchContact(); // Fetch contact data if necessary
   }
 
   @override
@@ -34,40 +34,44 @@ class _TicketHistoryPageState extends State<TicketHistoryPage> {
           return const Center(child: CircularProgressIndicator());
         }
 
+        // Ambil semua tiket yang telah di-fetch
         final tickets = ticketController.tickets;
-        final contactId = contactController.contact.value.id;
+        final contactId = contactController.contact.value?.id;
 
-        // Filter the tickets by contactId and status == "win"
+        // Pastikan contactId sudah terisi
+        if (contactId == null) {
+          return const Center(child: Text('No contact found for this user.'));
+        }
+
+        // Filter tiket berdasarkan contactId
         final filteredTickets = tickets.where((ticket) {
-          return ticket.contact?.id == contactId && ticket.status?.toLowerCase() == 'win';
+          return ticket.contactId == contactId;
         }).toList();
 
+        // Jika tiket yang difilter kosong
         if (filteredTickets.isEmpty) {
-          return const Center(child: Text('No winning ticket history available.'));
+          return const Center(child: Text('No ticket history available.'));
         }
 
         return RefreshIndicator(
           onRefresh: () async {
-            // Call the method to reload ticket data when the user pulls down
-            await ticketController.fetchTickets();
+            await ticketController.fetchTickets(); // Fetch latest tickets
           },
           child: ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(), // Ensure the list is always scrollable
             itemCount: filteredTickets.length,
             itemBuilder: (context, index) {
               final ticket = filteredTickets[index];
               final seatNumber = ticket.seatNumber ?? 'No Seat';
               final purchaseDate = ticket.purchaseDate ?? 'No Date';
-              final status = ticket.status ?? 'Unknown';
               final showTitle = ticket.show?.title ?? 'No Show Title';
+              final status = ticket.status ?? 'Unknown';
 
               return InkWell(
                 onTap: () {
-                  // Navigate to the TicketDetailPage when a ticket is tapped
+                  // Navigate to a ticket detail page (if you have one)
                   Get.to(() => TicketDetailPage(
                     title: showTitle,
-                    description: 'Seat: $seatNumber'
-                        '\nStatus: $status',
+                    description: 'Seat: $seatNumber\nStatus: $status',
                     date: purchaseDate,
                   ));
                 },
